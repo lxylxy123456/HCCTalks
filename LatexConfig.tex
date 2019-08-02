@@ -11,6 +11,7 @@
 \usepackage{eso-pic}
 \usepackage{courier}
 \usepackage{textcomp}
+\usepackage[inkscapepath=/tmp/TalkSvg/]{svg}
 
 \newcommand{\link}[1]{\href{#1}{#1}}
 
@@ -24,14 +25,14 @@
 
 \newcommand{\HCCLogoSimp}{
 	\begin{tikzpicture}[scale=0.1]
-		\input{HCCLogoLogo.tex}
+		\input{asserts/HCCLogoLogo.tex}
 	\end{tikzpicture}
 }
 
 \newcommand{\HCCLogoFull}{
 	\begin{tikzpicture}[scale=0.05]
-		\input{HCCLogoLogo.tex}
-		\input{HCCLogoText.tex}
+		\input{asserts/HCCLogoLogo.tex}
+		\input{asserts/HCCLogoText.tex}
 	\end{tikzpicture}
 }
 
@@ -90,7 +91,7 @@
 	commentstyle=\color[HTML]{0000ff},
 	stringstyle=\color[HTML]{ff0bff},
 	keywordstyle=[3]\color[HTML]{008a8c},
-	alsoletter={0,1,2,3,4,5,6,7,8,9,.},
+	alsoletter={0123456789.},
 	morekeywords=[4]{0,1,2,100,999},
 	keywordstyle=[4]\color[HTML]{ff0bff},
 	upquote=true,
@@ -124,17 +125,22 @@
 	language=bash,
 	basicstyle=\ttfamily,
 	% frame=single,
-	morekeywords=[2]{cp,df,du,find,ll,ls,mkdir,mv,rm,tree},
+	morekeywords=[2]{
+		cp,df,du,find,ll,ls,mkdir,mv,rm,tree,
+		cut,diff,grep,head,hexdump,less,man,md5sum,more,nano,sha1sum,tail,vi,wc,
+	},
 	keywordstyle=\bfseries\color[HTML]{a52a2a},	
 	keywordstyle=[2]\color[HTML]{008a8c},
 	commentstyle=\color[HTML]{0000ff},
 	stringstyle=\color[HTML]{ff0bff},
 	keywordstyle=[3]\color[HTML]{008a8c},
-	alsoletter={-=0123456789.},
+	alsoletter={-=0123456789.|},
+	morekeywords={|,>,<},
 	morekeywords=[4]{
 		0,1,2,3,4,5,6,7,8,9,10,
 		a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,
-		dev,etc,hcc,tmp,home,
+		dev,etc,hcc,home,jkl,sda,tmp,urandom,
+		-,stdin,stdout,stderr,
 	},
 	keywordstyle=[4]\color[HTML]{ff0bff},
 	upquote=true,

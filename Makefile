@@ -11,7 +11,7 @@ all:
 ALL: $(TARGETS)
 
 $(TARGETS): /tmp/%.pdf : %.tex LatexConfig.tex
-	pdflatex -output-directory /tmp $^
+	pdflatex -shell-escape -output-directory /tmp $^
 
 clean_tmp: 
 	rm -f \
@@ -22,6 +22,7 @@ clean_tmp:
 		$(TARGETS:/tmp/%.pdf=/tmp/%.snm) \
 		$(TARGETS:/tmp/%.pdf=/tmp/%.toc) \
 		$(TARGETS:/tmp/%.pdf=/tmp/%.vrb)
+	rm -rf /tmp/TalkSvg/
 
 clean_pdf:
 	rm -f $(TARGETS)

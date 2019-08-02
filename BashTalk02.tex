@@ -1,0 +1,274 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Bash Talk 2}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 什么命令可以……？
+				\begin{itemize}
+				\item 查看目录树和其他信息
+				\item 查看磁盘空间
+				\item 复制、移动和删除文件
+				\item 创建目录
+				\item 切换工作目录
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
+			ll		ls		pwd
+			du		df		tree
+			cat		rm		mkdir
+			mv		cp		find
+			cd
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{处理文件}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 在这次Bash Talk中我们将学习如何处理文件
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	@查找@	grep
+	@截断@	head	tail	cut
+	@统计@	wc		md5sum	sha1sum
+	@查看@	more	less	nano	vi
+	@转换@	hexdump
+	@比较@	diff
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{查找和截断}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	grep @单词@ @\color[HTML]{ff0bff}文件　　@		 # 查找单词
+	head @\color[HTML]{ff0bff}文件　　　　@		 # 获得文件开头
+	tail @\color[HTML]{ff0bff}文件　　　　@		 # 获得文件结尾
+	cut -b @开始-结束@ @\color[HTML]{ff0bff}文件@	# 截取文件的某些列
+	\end{lstlisting}
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	ls --help > a
+	cat a
+	grep sort=WORD a
+	head a
+	tail a
+	cut -b 10-40 a
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{关于文件输入输出}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 所有的命令都支持多文件
+	\item 在 \inlineBash{man} 手册或者帮助中会有提示，例如
+		\begin{itemize}
+		\item \inlineBash{more [file ...]}
+		\end{itemize}
+	\item 如果没有给定文件，将会用 \inlineBash{stdin} 作为输入
+		\begin{itemize}
+		\item 文件 \inlineBash{-} 可以代表 \inlineBash{stdin} 来进行处理
+		\end{itemize}
+	\item 大多命令的输出是 \inlineBash{stdout}
+	\item 所有命令的错误数据会被转到 \inlineBash{stderr}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{标准输入输出}
+	\linespread{1.25}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\includesvg[scale=0.4]{asserts/Stdstreams-notitle}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 标准输入输出
+				\begin{lstlisting}[style=bashstyle, gobble=16, texcl]
+				stdin	标准输入
+				stdout	标准输出
+				stderr	标准错误
+				\end{lstlisting}
+			\item 文件也可用作输入输出
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{统计}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	wc @\color[HTML]{ff0bff}文件@			# 统计文件行数、词数、字数
+	md5sum @\color[HTML]{ff0bff}文件@		# 得到文件的md5哈希值
+	sha1sum @\color[HTML]{ff0bff}文件@	# 得到文件的sha1哈希值
+	\end{lstlisting}
+	\item 这些命令只会读取文件
+	\item wc的全称是什么？
+	\item 你能发现输出的规律吗？
+	\item 如果还有时间，尝试 
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	sha224sum		sha256sum
+	sha384sum		sha512sum
+	shasum
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{管线}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\includesvg[scale=0.4]{asserts/Pipeline}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 管线（\href{https://en.wikipedia.org/wiki/Pipeline\_(Unix)}
+							{pipeline}）可以将一个程序的 \inlineBash{stdout}
+							接到另一个程序的 \inlineBash{stdin} 上
+				\begin{itemize}
+				\item \inlineBash{pr1 | pr2 | pr3}
+				\item \inlineBash{ls --help | wc}
+				\end{itemize}
+			\item 连接数量几乎没有限制
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{查看和编辑}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	more @\color[HTML]{ff0bff}文件@	# 查看
+	less @\color[HTML]{ff0bff}文件@	# 查看
+	nano @\color[HTML]{ff0bff}文件@	# 编辑
+	vi @\color[HTML]{ff0bff}文件@		# 编辑
+	\end{lstlisting}
+	\item 尝试用方向、翻页键和Home、End控制
+		\begin{itemize}
+		\item 如果没东西了尝试一直按下左方向键
+		\end{itemize}
+	\item 按 \texttt{q} 可以退出
+		\begin{itemize}
+		\item \inlineBash{vi}是 \texttt{:q}
+		\end{itemize}
+	\item 参数
+		\begin{itemize}
+		\item \inlineBash{journalctl | less -S}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{转换和比较}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 转换
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl, escapechar=@]
+		hexdump @\color[HTML]{ff0bff}文件@		# 将二进制文件转换为可读形式
+		\end{lstlisting}
+	\item 比较
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl, escapechar=@]
+		diff @\color[HTML]{ff0bff}文件1@ @\color[HTML]{ff0bff}文件2@
+		\end{lstlisting}
+	\item 尝试
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl, escapechar=@]
+		cat /dev/urandom
+		hexdump /dev/urandom
+		ls -la > a
+		mkdir jkl
+		ls -l > b
+		diff a b
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{这些命令可以干什么}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 在文件中查找
+			\item 得到一个文件的末尾
+			\item 动态浏览文件
+			\item 计算文件的哈希值
+			\item 对比文件
+			\item 统计文件大小
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
+			grep	head	tail
+			less	nano	vi
+			cut		wc		md5sum
+			diff	more
+			hexdump
+			sha1sum
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Windows可以干什么}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 在文件中查找 (\texttt{find})
+			\item {\color{gray}得到一个文件的末尾}
+			\item {\color{gray}动态浏览文件}
+			\item {\color{gray}计算文件的哈希值}
+			\item 对比文件 (\texttt{fc})
+			\item {\color{gray}统计文件大小}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl, escapechar=@]
+			grep	@{\color{gray}head}@	@{\color{gray}tail}@
+			@{\color{gray}less}@	@{\color{gray}nano}@	@{\color{gray}vi}@
+			@{\color{gray}cut}@	 @{\color{gray}wc}@	   @{\color{gray}md5sum}@
+			diff	@{\color{gray}more}@
+			@{\color{gray}hexdump}@
+			@{\color{gray}sha1sum}@
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+
