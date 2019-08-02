@@ -1,0 +1,290 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 4}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 使用while计算以下等比数列的\textbf{乘积}
+		\begin{itemize}
+		\item \inlinePython{27, 81, 243, 729, 2187, 6561}
+		\end{itemize}
+	\item 使用for和range计算以下等差数列的\textbf{乘积}
+		\begin{itemize}
+		\item \inlinePython{10, 17, 24, 31, 38, 45}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{循环和判断}
+	\linespread{2}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 循环（PythonTalk3）
+				\begin{itemize}
+				\item \inlinePython{for}
+				\item \inlinePython{while}
+				\end{itemize}
+			\item 循环控制（PythonTalk4）
+				\begin{itemize}
+				\item \inlinePython{break}
+				\item \inlinePython{continue}
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 判断（PythonTalk4）
+				\begin{itemize}
+				\item \inlinePython{if}
+					\begin{itemize}
+					\item \inlinePython{else}
+					\item \inlinePython{elif}
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{if}语句}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 语法
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			if Expression :
+				Code
+			elif Expression :
+				Code
+			else :
+				Code
+			Code
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 对比C语言
+			\begin{lstlisting}[style=cstyle, gobble=12]
+			if (Expression) {
+				Code;
+			} else if (Exp) {
+				Code;
+			} else {
+				Code;
+			}
+			Code;
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{if}例子}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 解释数值\inlinePython{a}和\inlinePython{b}的大小关系
+	\begin{lstlisting}[style=pythonstyle, gobble=4]
+	if a > b :
+		print('Bigger')
+	elif a < b :
+		print('Smaller')
+	else :
+		print('Equal')
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{if}练习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 输出a年是否为闰年
+		\begin{itemize}
+		\item 公元年分除以4不可整除，为平年。
+		\item 公元年分除以4可整除但除以100不可整除，为闰年。
+		\item 公元年分除以100可整除但除以400不可整除，为平年。
+		\item 公元年分除以400可整除，为闰年。
+		\item 以上规则来自
+				\href{https://zh.wikipedia.org/wiki/\%E9\%97\%B0\%E5\%B9\%B4}
+					{维基百科}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{答案}
+	\linespread{1.25}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=pythonstyle, tabsize=2, gobble=6, texcl]
+			# 程序1
+			if a % 4 == 0 :
+				if a % 100 == 0 :
+					if a % 400 == 0 :
+						print(True)
+					else :
+						print(False)
+				else :
+					print(True)
+			else :
+				print(False)
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.47\textwidth}
+			\begin{lstlisting}[style=pythonstyle, tabsize=2, gobble=6, texcl]
+			# 程序2
+			if a % 400 == 0 :
+				print(True)
+			elif a % 100 == 0 :
+				print(False)
+			elif a % 4 == 0 :
+				print(True)
+			else :
+				print(False)
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{break}和\inlinePython{continue}}
+	\linespread{1.25}
+	\begin{columns}[T]
+		\begin{column}[T]{.52\textwidth}
+			\begin{itemize}
+			\item 作用于最近的\inlinePython{for}或\inlinePython{while}
+				\begin{itemize}
+				\item Code1上的\inlinePython{break}或\inlinePython{continue}作用于
+						``\inlinePython{for j in b :}''
+				\end{itemize}
+			\item \inlinePython{break}停止循环
+				\begin{itemize}
+				\item 若Code1为\inlinePython{break}，则跳到Flag2
+				\end{itemize}
+			\item \inlinePython{continue}跳过这次循环
+				\begin{itemize}
+				\item 若Code1为\inlinePython{continue}，则跳到Flag1
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.48\textwidth}
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			for i in a :
+				for j in b :
+					Code1 <<<
+					Code2
+					# Flag1
+				# Flag2
+				Code3
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{break}练习}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 输出整数$a$是否是质数
+	\begin{lstlisting}[style=pythonstyle, gobble=4]
+	flag = True
+	for i in range(2, a) :
+		if a % i == 0 :
+			print(False)
+			flag = False
+			break
+	if flag :
+		print(True)
+	\end{lstlisting}
+	\item 思考：如何更改程序，在$a \le 1$时输出一个错误信息？
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{质数算法优化1}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 优化1：不计算的多余偶数
+		\begin{lstlisting}[style=pythonstyle, gobble=8]
+		if a == 2 :
+			print(True)
+		elif a % 2 == 0 :
+			print(False)
+		else :
+			for i in range(3, a, 2) :
+				if a % i == 0 :
+					print(False)
+					break
+				print(True)
+		\end{lstlisting}
+	\item 提示：以上代码有误，请自行更正
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{import}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item Python程序可以通过\inlinePython{import}调用一个包，来进行复杂计算和操作
+	\item 例
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		import math
+		math.sqrt(33)	# 得到33的平方根
+		\end{lstlisting}
+	\item 对于平方根，可以不使用math包：
+		\begin{lstlisting}[style=pythonstyle, gobble=8]
+		33**0.5
+		\end{lstlisting}
+		但是使用诸如\inlinePython{sin}, \inlinePython{cos}的复杂函数时需要math包
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{质数算法优化2}
+	\begin{itemize}
+	\item 优化2：计算到$\lfloor\sqrt{a}\rfloor$，而不是$a - 1$
+		\begin{itemize}
+		\item 例如对于$49$，判断$2, 3, 5, 7$，而不是$2, 3, 5, 7, 9, ..., 47$
+		\end{itemize}
+		\begin{lstlisting}[style=pythonstyle, gobble=8]
+		if a == 2 :
+			print(True)
+		elif a % 2 == 0 :
+			print(False)
+		else :
+			import math
+			e = int(math.sqrt(a)) + 1
+			for i in range(3, e, 2) :
+				if a % i == 0 :
+					print(False)
+					break
+				print(True)
+		\end{lstlisting}
+	\item 提示：以上代码有误，请自行更正
+	\end{itemize}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

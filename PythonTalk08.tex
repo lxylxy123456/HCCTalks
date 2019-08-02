@@ -1,0 +1,208 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 8}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{连线：这些功能可以做什么}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{enumerate}
+			\item 产生随机数
+			\item 制造唯一链接
+			\item 安全输入密码
+			\item 生成二维码
+			\item 架设一个网站
+			\end{enumerate}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item \inlinePython{uuid}
+			\item \inlinePython{qrcode}
+			\item \inlinePython{python3}
+			\item \inlinePython{getch}
+			\item \inlinePython{random}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{实际应用}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 在这次讲座中我们将会用Python完成一些实际的工作
+		\begin{itemize}
+		\item 生成二维码
+		\item 批量处理文本
+		\item 裁剪图片
+		\item 批量下载附件
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{qrcode}}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 回忆：\inlinePython{qrcode}用来生成二维码
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		import qrcode
+		qrcode.run_example('@\color[HTML]{ff0bff}内容字符串@')
+		\end{lstlisting}
+	\item 需要额外安装软件包：\texttt{pip3 install qrcode}
+	\item 任务：生成十一圈活动二维码
+		\begin{itemize}
+		\item 例：\texttt{http://shiyiquan.net/event/123/}
+		\item 将123替换为活动id（通过input得到）
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{批量处理文本}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 按行读取文件
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		for i in 文件.readlines() :
+			...			 # i 是文件的其中一行
+		\end{lstlisting}
+	\item 取出数据
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		'@\color[HTML]{ff0bff}字符串@'.split()	# 用 [] 选择需要的部分
+		\end{lstlisting}
+	\item 任务
+		\begin{enumerate}
+		\item 在命令行执行：\texttt{ls -l /etc > /tmp/etc}
+		\item 计算 \texttt{/tmp/etc} 文件第一行以外每一行的第五列的和
+		\end{enumerate}
+	\item 答案
+		\fontsize{2}{2}\selectfont
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		s = 0
+		for i in open('/tmp/etc').readlines()[1:] :
+			s += int(i.split()[4])
+
+		print(s)
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{图片处理}
+	\begin{itemize}
+	\item Pillow库
+		\begin{itemize}
+		\item \inlinePython{from PIL import Image}
+		\item 需要额外安装软件包：\texttt{pip3 install pillow}
+		\end{itemize}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl, escapechar=@]
+	a = Image.open('@\color[HTML]{ff0bff}文件名@')		# 打开图像
+	a.show()					 # 预览
+	b = a.crop((@左@, @上@, @右@, @下@))  # 裁剪
+	b.save('@\color[HTML]{ff0bff}文件名@')				# 保存
+	\end{lstlisting}
+	\end{itemize}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 任务
+				\begin{itemize}
+				\item 编写一个Python程序，将输入的任何图片从中间裁减为正方形
+				\item 参考右侧示例，将深色部分从浅色的输入图片中裁减出来
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{tikzpicture}[scale=0.5]
+			\def\x{7}
+			\filldraw [color={rgb,255:red,255; green,255; blue,255}]
+				(-0.5,-0.5) rectangle (\x+4.5,6.5);
+			\filldraw [color={rgb,255:red,0; green,170; blue,212}]
+				(0,1) rectangle (6,5);
+			\filldraw [color={rgb,255:red,0; green,170; blue,212}]
+				(\x,0) rectangle (\x+4,6);
+			\filldraw [color={rgb,255:red,0; green,102; blue,128}]
+				(1,1) rectangle (5,5);
+			\filldraw [color={rgb,255:red,0; green,102; blue,128}]
+				(\x,1) rectangle (\x+4,5);
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{批量下载附件}
+	\begin{itemize}
+	\item 生成命令来批量下载这个网页上的附件
+		\begin{itemize}
+		\item \link{http://c.hcc.io/f/20151002moon/}
+		\item 提示：此网站有时可能无法访问，此时可随意找互联网上的网页尝试
+		\end{itemize}
+	\item 下载网页 / 附件的命令
+		\begin{itemize}
+		\item \texttt{curl 网址 > 文件}
+		\item 用\inlinePython{os.system}运行
+		\end{itemize}
+	\item 以{\color{blue}蓝色}字符为参照，截取网页每行的信息
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl, escapechar=@]
+	@\color{blue}<tbody>@
+		@\color{blue}<tr>@...</tr>
+		@\color{blue}<tr>@...</tr>
+		...
+	@\color{blue}</tbody>@
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{从每一行中取得信息}
+	\begin{itemize}
+	\item 以{\color{blue}蓝色}字符为参照，截取{\color[HTML]{ff0bff}粉色}的内容信息
+	\item 善用 \inlinePython{split}
+	\end{itemize}
+	\begin{lstlisting}[basicstyle=\ttfamily, gobble=4, texcl, escapechar=@]
+	<tr>
+	<th scope="row" class="hidden-xs"><h5>4</h5></th>
+	<td>@\color{blue}<h5>\color[HTML]{ff0bff}月亮.MOV\color{blue}</h5>@</td>
+	<td class="xs"><h5>459.6 MiB</h5></td>
+	<td class="xs"><h5>2</h5></td>
+	<td>@\color{blue}<a href="\color[HTML]{ff0bff}/f/20151002moon/\color{blue}"@ class="b">
+	<span class="glyphicon"></span> Save</a>
+	</td>
+	</tr>
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{解法}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl, escapechar=@]
+	for i in a.split('<tbody>')[2] \
+		.split('</tbody>')[0].split('<tr>')[1:] : 
+		print('curl %s > %s' % 
+			('http://c.hcc.io' + \
+			i.split('href="')[1].split('"')[0], 
+			i.split('<h5>')[2].split('</h5>')[0]))
+	\end{lstlisting}
+	\begin{itemize}
+	\item 使用正则表达式可以让程序更加简洁。这将在以后介绍。
+	\end{itemize}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

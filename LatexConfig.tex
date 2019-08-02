@@ -1,0 +1,130 @@
+\documentclass
+% [aspectratio=169]
+{beamer}
+
+\usepackage{CJKutf8}
+\usepackage{listings}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{verbatim}
+\usepackage{eso-pic}
+\usepackage{courier}
+\usepackage{textcomp}
+
+\newcommand{\link}[1]{\href{#1}{#1}}
+
+\newcommand{\insertGraph}[3]{
+
+	\centerline{\includegraphics[scale=#1]{#2}} % 0/0
+
+	\centerline{#3}
+
+}
+
+\newcommand{\HCCLogoSimp}{
+	\begin{tikzpicture}[scale=0.1]
+		\input{HCCLogoLogo.tex}
+	\end{tikzpicture}
+}
+
+\newcommand{\HCCLogoFull}{
+	\begin{tikzpicture}[scale=0.05]
+		\input{HCCLogoLogo.tex}
+		\input{HCCLogoText.tex}
+	\end{tikzpicture}
+}
+
+\setbeamercolor{background canvas}{bg=}
+
+\newcommand{\PreFirstFrame}{
+	\AddToShipoutPictureFG*{
+		\AtPageLowerLeft{
+			\put(\LenToUnit{0.05\paperwidth},\LenToUnit{0.1\paperheight}){
+				\footnotesize
+				这个指引文档在
+				\href{https://creativecommons.org/licenses/by-sa/3.0/deed.zh}
+				{知识共享 署名-相同方式共享 3.0协议}之条款下提供
+			}
+			\put(\LenToUnit{0.05\paperwidth},\LenToUnit{0.05\paperheight}){
+				\footnotesize
+				This guidance is available under the 
+				\href{https://creativecommons.org/licenses/by-sa/3.0/}
+				{Creative Commons Attribution-ShareAlike License}
+			}
+			\put(\LenToUnit{0.6\paperwidth},\LenToUnit{0.15\paperheight}){
+				\HCCLogoFull
+			}
+		}
+	}
+}
+
+\newcommand{\PostFirstFrame}{
+	\AddToShipoutPictureBG{
+		\AtPageLowerLeft{
+			\put(\LenToUnit{0.8\paperwidth},\LenToUnit{0.15\paperheight}){
+				\HCCLogoSimp
+			}
+		}
+	}
+}
+
+\newcommand{\PreLastFrame}{
+	\ClearShipoutPictureBG
+
+	\AddToShipoutPictureFG*{
+		\AtPageLowerLeft{
+			\put(\LenToUnit{0.6\paperwidth},\LenToUnit{0.15\paperheight}){
+				\HCCLogoFull
+			}
+		}
+	}
+}
+
+% Note: this C style differs a lot from gedit's
+\lstdefinestyle{cstyle}{
+	language=c,
+	basicstyle=\ttfamily,
+	morekeywords={with},
+	keywordstyle=\bfseries\color[HTML]{a52a2a},	
+	commentstyle=\color[HTML]{0000ff},
+	stringstyle=\color[HTML]{ff0bff},
+	keywordstyle=[3]\color[HTML]{008a8c},
+	alsoletter={0,1,2,3,4,5,6,7,8,9,.},
+	morekeywords=[4]{0,1,2,100,999},
+	keywordstyle=[4]\color[HTML]{ff0bff},
+	upquote=true,
+	breaklines=true,
+}
+
+\lstdefinestyle{pythonstyle}{
+	language=python,
+	basicstyle=\ttfamily,
+	% frame=single,
+	morekeywords={with,yield},
+	keywordstyle=\bfseries\color[HTML]{a52a2a},	
+	keywordstyle=[2]\color[HTML]{008a8c},
+	commentstyle=\color[HTML]{0000ff},
+	stringstyle=\color[HTML]{ff0bff},
+	keywordstyle=[3]\color[HTML]{008a8c},
+	alsoletter={0123456789.},
+	morekeywords=[4]{False,True,
+		0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,17,19,16,20,24,27,31,32,33,34,35,38,
+		45,56,60,64,81,95,97,99,100,123,243,256,400,512,576,729,999,1024,1234,
+		1365,1366,2000,2187,2836,2957,3856,3857,5678,6561,9274,100000,1000000,
+		0.5,3.14,3.4,
+		0x1234,},
+	keywordstyle=[4]\color[HTML]{ff0bff},
+	upquote=true,
+	breaklines=true,
+	showstringspaces=false,
+}
+
+\lstset{
+	tabsize=4,
+	columns=fixed,
+	extendedchars=false,
+}
+
+\newcommand{\inlinePython}{\lstinline[style=pythonstyle]}
+

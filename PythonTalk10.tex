@@ -1,0 +1,407 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 10}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame}
+	\frametitle{多线程编程}
+	\begin{itemize}
+	\item 多线程编程可以让程序更加灵活
+		\begin{itemize}
+		\item e.g. 一个网络服务器需要处理很多个客户端的请求，但每个请求之间没有很大的关联
+		\end{itemize}
+	\item 多线程在某些情况下可以提升程序效率
+		\begin{itemize}
+		\item e.g. 一个程序需要处理很多互相独立的图像，此时可以利用多个CPU的优势平行处理
+		\end{itemize}
+	\item 多线程程序相对容易出错、难以调试
+	\item 为了防止竞争条件，需要用锁、条件变量等进行控制
+	\item Python的\texttt{threading}库支持多线程编程
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{计算一百万个1相加}
+	\begin{itemize}
+	\item 单线程做法
+	\begin{lstlisting}[style=pythonstyle, gobble=0]
+s = 0
+for i in range(1000000) :
+	s += 1
+print(s)
+	\end{lstlisting}
+	\item 多线程做法
+		\begin{itemize}
+		\item 开10个线程，共享变量s；每个线程进行100000次加法
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{多线程程序}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting} [style=pythonstyle, gobble=0, tabsize=2, 
+								basicstyle=\footnotesize\ttfamily]
+import time, threading
+
+s = 0
+
+class MyThread(threading.Thread) :
+	def run(self) :
+		global s
+		for i in range(100000) :
+			s += 1
+
+if __name__ == '__main__' :
+	for i in range(10) :
+		MyThread().start()
+	time.sleep(3)
+	print(s)
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item import：引入threading库
+			\item threading.Thread：线程的基类
+				\begin{itemize}
+				\item run()为线程的执行内容
+				\item 调用start()以开始线程
+				\item 如果调用run()就不是多线程调用了
+				\end{itemize}
+			\item global表示引用全局变量
+			\item 通过time.sleep(3)等待所有线程结束
+			\item 问题：得到的结果是1000000吗？
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{竞争条件}
+	\begin{itemize}
+	\item 看似简单的 \texttt{s += 1} 其实包含多个指令
+	\begin{lstlisting} [gobble=4, basicstyle=\small\ttfamily]
+	load  register,       memory[0x1234]
+	add   register,       1
+	store memory[0x1234], register
+	\end{lstlisting}
+	\item 翻译成Python就是
+	\begin{lstlisting} [style=pythonstyle, gobble=4, basicstyle=\small\ttfamily]
+	reg = mem[0x1234]	# load
+	reg += 1			# execute
+	mem[0x1234] = reg	# store
+	\end{lstlisting}
+	\item CPU可能在任何两个指令中间暂停执行，并切换到另一个线程
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{竞争条件}
+	\begin{itemize}
+	\item 思考如下左右两个线程的执行先后顺序，时间从上到下
+	\begin{lstlisting} [style=pythonstyle, gobble=4,
+						basicstyle=\footnotesize\ttfamily]
+	# Thread 1			# Thread 2
+											# mem[] = 0
+	reg1 = memory[]							# reg1 = 1
+						reg2 = memory[]		# reg2 = 1
+	reg1 += 1								# reg1 = 2
+						reg2 += 1			# reg2 = 2
+	mem[] = reg1							# mem[] = 2
+						mem[] = reg2		# mem[] = 2
+	\end{lstlisting}
+	\item 竞争条件（race
+			condition）的定义：两个线程同时访问一个内存地址，其中至少一个访问是写入
+	\item 竞争条件有很多解决方法
+		\begin{itemize}
+		\item 其中最常用的是通过锁控制访问
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{锁}
+	\begin{itemize}
+	\item 锁（Lock）是一种特殊变量，每个线程需要使用某些资源时获取锁，在用完后释放锁
+	\item 通过各种硬件和软件机制，任何时刻只能有最多一个线程获得锁
+		\begin{itemize}
+		\item 如果线程尝试获取被占用的锁，一直等待到锁被释放
+		\end{itemize}
+	\begin{lstlisting} [style=pythonstyle, gobble=4, basicstyle=\ttfamily, texcl]
+	lock = threading.Lock()	# 创建锁
+	lock.acquire()			# 获取锁
+	lock.release()			# 释放锁
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{锁示例}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting} [style=pythonstyle, gobble=0, tabsize=2, 
+								basicstyle=\footnotesize\ttfamily]
+import time, threading
+
+s = 0
+s_lock = threading.Lock()
+
+class MyThread(threading.Thread) :
+	def run(self) :
+		global s, s_lock
+		for i in range(100000) :
+			s_lock.acquire()
+			s += 1
+			s_lock.release()
+
+if __name__ == '__main__' :
+	for i in range(10) :
+		MyThread().start()
+	time.sleep(5)
+	print(s)
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 锁s\_lock用于管理对s的访问
+			\item 访问s之前用acquire获取锁
+			\item 访问s之后用release获取锁
+			\item 程序的运算时间有所增长，因此sleep从3秒变为5秒
+				\begin{itemize}
+				\item 因为当另一个线程在访问s时，当前线程需要等待
+				\item 如何避免使用sleep？
+				\item 真实的程序中无法预测线程执行时间
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{条件变量}
+	\begin{itemize}
+	\item 实现线程之间的信号传递
+	\item 问题：线程A希望读取变量X，但是需要在线程B写入变量之后进行。
+			X的访问通过X\_lock进行限制，通过X\_ready标明是否已经写入。
+	\item 实现1
+		\begin{itemize}
+		\item 线程A通过一个循环，不断获取X\_lock并通过X\_ready判断是否可以读取X
+		\item 问题：如果X一直没有被写入，A会进行不停的无用计算
+		\end{itemize}
+	\item 实现2
+		\begin{itemize}
+		\item A的每次循环后用\texttt{time.sleep}等待一个很短的时间
+		\item 问题：虽然等待很短，但还是有延迟
+		\end{itemize}
+	\item 实现3
+		\begin{itemize}
+		\item 线程B在写入后``通知''线程A
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{条件变量}
+	\begin{itemize}
+	\item 条件变量允许线程传递``某个事件发生''的信息
+	\item 条件变量需要和锁共同使用，当一个线程使用条件变量时必须已获得对应的锁
+	\begin{lstlisting} [style=pythonstyle, gobble=4, basicstyle=\ttfamily, texcl]
+	cv = threading.Condition(lock)
+	lock.acquire()		# 必须先获取lock才能使用cv
+	cv.wait()			# 等待一个事件的发生
+	cv.notify()			# 通知一个等待的线程
+	cv.notify_all()		# 通知所有等待的线程
+	lock.release()
+	\end{lstlisting}
+	\item \texttt{cv.wait()}返回时不保证是被\texttt{notify}的
+		\begin{itemize}
+		\item 因此应该用一个\texttt{while}循环重新判断是否等待
+		\end{itemize}
+	\item \texttt{cv.wait()}时会释放\texttt{lock}，否则会阻塞其它线程
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{条件变量示例}
+	\begin{itemize}
+	\item 线程A读取X，线程B写入X
+	\begin{lstlisting} [style=pythonstyle, gobble=4, basicstyle=\small\ttfamily]
+	X = 0
+	X_lock = threading.Lock()
+	X_ready = False
+	X_cv = threading.Condition(X_lock)
+	class ThreadA(threading.Thread) :
+		def run(self) :
+			X_lock.acquire()
+			while not X_ready :
+				X_cv.wait()
+			print(X)
+			X_lock.release()
+	class ThreadB(threading.Thread) :
+		def run(self) :
+			X_lock.acquire()
+			X = 1234
+			X_cv.notify()
+			X_lock.release()
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\texttt{with}}
+	\begin{itemize}
+	\item Python中\texttt{with}有多种用途，在锁中可以用于获取一个锁
+	\begin{lstlisting} [style=pythonstyle, gobble=4, texcl]
+	lock = threading.Lock()
+	with lock :
+		# 锁被获取
+		# Do something
+	# 锁被释放
+	\end{lstlisting}
+	\item 等价于
+	\begin{lstlisting} [style=pythonstyle, gobble=4, escapechar=@]
+	lock = threading.Lock()
+	lock.acquire()
+	# @\color{blue}锁被获取@
+	# Do something
+	lock.release()
+	# @\color{blue}锁被释放@
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{条件变量示例2}
+	\begin{itemize}
+	\item 让主线程等待所有线程退出
+	\begin{lstlisting} [style=pythonstyle, basicstyle=\footnotesize\ttfamily]
+r = 0
+r_lock = threading.Lock()
+r_cv = threading.Condition(r_lock)
+
+class MyThread(threading.Thread) :
+	def run(self) :
+		global r, r_lock, r_cv
+		...
+		with r_lock :
+			r -= 1
+			r_cv.notify()
+
+if __name__ == '__main__' :
+	for i in range(10) :
+		with r_lock :
+			r += 1
+		MyThread().start()
+	with r_lock :
+		while r :
+			r_cv.wait()
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{comment}
+import threading
+
+s = 0
+s_lock = threading.Lock()
+r = 0
+r_lock = threading.Lock()
+r_cv = threading.Condition(r_lock)
+
+class MyThread(threading.Thread) :
+	def run(self) :
+		global s, s_lock, r, r_lock, r_cv
+		for i in range(100000) :
+			s_lock.acquire()
+			s += 1
+			s_lock.release()
+		with r_lock :
+			r -= 1
+			r_cv.notify()
+
+if __name__ == '__main__' :
+	for i in range(10) :
+		with r_lock :
+			r += 1
+		MyThread().start()
+	with r_lock :
+		while r :
+			r_cv.wait()
+	print(s)
+\end{comment}
+
+\begin{frame} [fragile]
+	\frametitle{练习}
+	\begin{enumerate}
+	\item 实现一个线程安全的队列
+		\begin{itemize}
+		\item 队列的长度限制为n
+		\item 对于\texttt{enqueue(elem)}操作，如果队列不到n个元素，将\texttt
+				{elem}插入队列；如果队列已经有n个元素，阻塞至队列长度变小
+		\item 对于\texttt{dequeue()}操作，如果队列中有元素，返回队列中最早被插入的元素；否则阻塞至队列长度变大
+		\end{itemize}
+	\item 实现一个主要是读的读写锁
+		\begin{itemize}
+		\item 读写锁允许很多个读锁定线程，但是不可以多个写阻塞线程
+		\item 读和写锁定不能同时存在
+		\item 读锁定和解锁应该尽可能被优化
+		\item 写不能被长时间阻塞（当没有读时写不能被阻塞）
+		\item 方法：\texttt{read\_acquire(), read\_release(), write\_acquire(), write\_release()}
+		\end{itemize}
+\begin{comment}
+# from `locate blocked.py`
+class ReadWriteLock :
+	def __init__(self) :
+		self.writing = False	# whether a writer is waiting / writing
+		self.reading = 0		# 0: no readers; > 0: number of readers
+		self.lock = threading.Lock()
+		self.read_cv = threading.Condition(self.lock)
+		self.write_cv = threading.Condition(self.lock)
+	def read_acquire(self) :
+		with self.lock :
+			while self.writing :
+				self.read_cv.wait()
+			self.reading += 1
+	def read_release(self) :
+		with self.lock :
+			self.reading -= 1
+			if self.writing and not self.reading :
+				self.write_cv.notify()
+	def write_acquire(self) :
+		with self.lock :
+			while self.writing or self.reading :
+				self.write_cv.wait()
+			self.writing = True
+	def write_release(self) :
+		with self.lock :
+			self.writing = False
+			self.read_cv.notify_all()
+\end{comment}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}
+	\frametitle{参考资料}
+	\begin{itemize}
+	\item Operating Systems - Principles \& Practice, Second Edition,
+		by Thomas Anderson and Mike Dahlin
+	\item \link{https://docs.python.org/3/library/threading.html}
+	\end{itemize}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

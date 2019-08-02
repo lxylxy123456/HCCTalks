@@ -1,0 +1,208 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 1}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame}
+	\frametitle{Python 是什么？}
+	\linespread{2}
+	\begin{itemize}
+	\item Python 是一个多用途的高级语言
+	\item Python 可以用简单的代码完成复杂的工作
+	\item 我们使用 Python3.7 进行编程
+	\item 推荐使用 Python3 和更高版本
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{2的999次方最后两位是多少？}
+	\begin{columns}[T]
+		\begin{column}[T]{.25\textwidth}
+			\begin{itemize}
+			\item 计算器
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			2^999
+			\end{lstlisting}
+			（不精确）
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.75\textwidth}
+			\begin{itemize}
+			\item Python 3
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			print(2 ** 999 % 100)
+			\end{lstlisting}
+			\item C
+			\begin{lstlisting}[style=cstyle, gobble=12]
+			#include "stdio.h"
+			int main(void) {
+			  int last = 1;
+			  for(int i = 0; i < 999; i += 1){
+				last *= 2;
+				last %= 100;
+			  }
+			  printf("%d\n", last);
+			  return 0;
+			}
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{基本计算}
+	\begin{itemize}
+	\item Python可以轻松完成基本的数学计算
+	\item 像做数学题一样输入方程即可！
+	\item 运算符
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	+		# 加
+	-		# 减
+	*		# 乘
+	/		# 除
+	**		# 乘方
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{计算以下数值}
+	\begin{lstlisting}[style=pythonstyle, gobble=4,
+						basicstyle=\linespread{2}\ttfamily]
+	1234 + 5678 - 2836
+	3856 * 9274 * 576
+	2957 / 3857
+	7 的 123 次方
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Tips}
+	\begin{itemize}
+	\item 得到上次的结果
+	\begin{lstlisting}[style=pythonstyle, gobble=4]
+	3 + 7
+	_ * 2
+	\end{lstlisting}
+	\item 这个符号是什么？
+	\begin{lstlisting}[style=pythonstyle, gobble=4]
+	3 // 5
+	3 / 5
+	\end{lstlisting}
+	\item 求余数
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	8 % 5   # 得到8÷5的余数
+	# 负数会怎样？
+	\end{lstlisting}
+	\item 将结果保存
+	\begin{lstlisting}[style=pythonstyle, gobble=4]
+	5 + 8
+	a = _
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{数值比较}
+	\begin{itemize}
+	\item 使用这些运算符
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl,
+						basicstyle=\linespread{1.5}\ttfamily]
+	>		# 大于
+	<		# 小于
+	==		# 等于，注意不是 =
+	!=		# 不等于
+	>=		# 大于等于
+	<=		# 小于等于
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{逻辑运算}
+	\begin{itemize}
+	\item 数值比较的结果是真假值，如 \texttt{2 < 3} 为真；\texttt{4 < 3} 为假
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl,
+						basicstyle=\linespread{1.5}\ttfamily]
+	True	# 真
+	False	# 假
+	and		# 且 / 与
+	or		# 或
+	not		# 非
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{试试看}
+	\begin{itemize}
+	\item 这些变量是真是假？
+	\begin{lstlisting}[style=pythonstyle, gobble=4]
+	0
+	1
+	'HCC'
+	3.14
+	\end{lstlisting}
+	\item 判断方法
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	a = 0
+	a == True # 不对？
+	bool(a)   # 正确
+	# 继续尝试 a = 1 等
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Python类型}
+	\begin{columns}[T]
+		\begin{column}[T]{.6\textwidth}
+			\begin{itemize}
+			\item 常见基本类型
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			int		# 整数
+			str		# 字符串
+			float	# 浮点数
+			bool	# 真假值 / 布尔值
+			\end{lstlisting}
+			\item 如何查看一个变量的类型
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			type(a)
+			\end{lstlisting}
+			\item 尝试
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			int(3.4)
+			help(int)
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.4\textwidth}
+			\begin{itemize}
+			\item 判断以下变量的类型
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			1
+			'HCC'
+			3.14
+			True
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

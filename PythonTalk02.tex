@@ -1,0 +1,274 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 2}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{2}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 计算下列数值
+				\begin{itemize}
+				\item 一百加二十
+				\item 一天有多少秒
+				\item 真或假
+				\item 三的一百次方
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 答案
+				\begin{itemize}
+				\item \inlinePython{100 + 20}
+				\item \inlinePython{24 * 60 * 60}
+				\item \inlinePython{True or False}
+				\item \inlinePython{3 ** 100}
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{复杂数据类型}
+	\linespread{2}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 常用类型
+				\begin{itemize}
+				\item 元组：\inlinePython{tuple}
+				\item 列表：\inlinePython{list}
+				\item 字符串：\inlinePython{str}
+				\item 字典：\inlinePython{dict}
+				\end{itemize}
+			\item 其他类型
+				\begin{itemize}
+				\item 集合：\inlinePython{set}
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 举例
+				\begin{itemize}
+				\item \inlinePython{(1, 2, 3)}
+				\item \inlinePython{('h', 'c', 'c')}
+				\item \inlinePython{"HCC, I'm. "}
+				\item \inlinePython|{1: 'H', 2: 'C'}|
+				\end{itemize}
+			\item 举例
+				\begin{itemize}
+				\item \inlinePython|{1, 2, 3}|
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{创建你自己的复杂数据}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item \inlinePython{(a, b, c)}
+			\item \inlinePython{[a, b, c]}
+			\item \inlinePython{'Some_Letters'}
+			\item
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			{
+				key_A: value_A,
+				key_B: value_B
+			}
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 所有元素都可以换成更复杂的类型
+			\item 基本类型
+				\begin{itemize}
+				\item \inlinePython{int		float	bool}
+				\end{itemize}
+			\item 复杂类型
+				\begin{itemize}
+				\item \inlinePython{tuple	list	str}
+				\item \inlinePython{dict	set}
+				\end{itemize}
+			\item \inlinePython{type}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{细节}
+	\linespread{1.25}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 创建一个元素的 \inlinePython{tuple}
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			('HCC')		# 失败
+			('HCC',)	# 正确
+			\end{lstlisting}
+			\item \inlinePython{list}和\inlinePython{dict}也支持
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item \inlinePython{str}创建方式
+				\begin{itemize}
+				\item 单引号
+				\begin{lstlisting}[style=pythonstyle, gobble=16, texcl]
+				'HCC, I\'m. '
+				\end{lstlisting}
+				\end{itemize}
+				\begin{itemize}
+				\item 双引号
+				\begin{lstlisting}[style=pythonstyle, gobble=16, texcl]
+				"HCC, I'm. "
+				\end{lstlisting}
+				\end{itemize}
+				\begin{itemize}
+				\item 多行字符串
+				\begin{lstlisting}[style=pythonstyle, gobble=16, escapechar=@]
+				@\color[HTML]{ff0bff}\textquotesingle\textquotesingle@'
+				HCC
+				'''
+				\end{lstlisting}
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{tuple}和\inlinePython{list}有什么区别}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			a = ()		# tuple
+			b = []		# list
+			help(a)
+			help(b)
+			# 你能找到区别吗？
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item \inlinePython{insert}
+			\item \inlinePython{pop}
+			\item \inlinePython{remove}
+			\item \inlinePython{reverse}
+			\item \inlinePython{sort}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{尝试基本运算符}
+	\begin{itemize}
+	\item 加法
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	(1, 2) + (5, 6)
+	[1, 2] + [5, 6]
+	'HCC' + ", I'm."
+	\end{lstlisting}
+	\item 乘法
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	(1, 2) * 3
+	'HCC' * 10
+	\end{lstlisting}
+	\item 合并\inlinePython{dict}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	{1: 2} + {3: 4}		# 失败
+	a = {1: 2}
+	a.update({3: 4})
+	print(a)			# 正确
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{字符串方法}
+	\linespread{1.5}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl, escapechar=@]
+	"HCC, I'm. ".upper()	# 大写
+	"HCC, I'm. ".lower()	# 小写
+	"HCC, I'm. ".split()	# 按空白字符分割
+	len("HCC, I'm. ")		# 得到长度
+	'&'.join([1, 2])		# 合并
+	@\color[HTML]{ff0bff}\textquotesingle\textquotesingle@'Hello from HCC:
+	Welcome!
+	'''.split('\n')			# 按换行符分割
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{分割}
+	\linespread{1.5}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+	a[4]
+	a[4: 7]
+	a[2: -2: 2]
+	a = 'abcdefghijklmnopqrstuvwxyz'
+		# 重复上面三行
+	{'a': 'b', 'b': 'c'}['b']
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{原理}
+	\linespread{2}
+	\begin{lstlisting}[basicstyle=\ttfamily,upquote=true,
+						showstringspaces=false,tabsize=4,columns=fixed]
+	   H   C   C   ,   I   '   m   .
+	 0   1   2   3   4   5   6   7   8
+	-8  -7  -6  -5  -4  -3  -2  -1
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{练习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 对于这些字符串，截取出用户名（\inlinePython{'@'}前面）
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	'HCC@shiyiquan.net'
+	'lxy@shiyiquan.net'
+	'mbl@shiyiquan.net'
+	'shiyiquan@shiyiquan.net'
+	\end{lstlisting}
+	\item 你能使用两种方式吗？提示：分割和 split
+	\item 哪种方式还可以正确截取这些字符串？
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	'HCC@hcc.io'
+	'lxy@shierquan.tk'
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

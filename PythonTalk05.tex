@@ -1,0 +1,214 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 5}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 输出正整数a是否是平方数和是否是立方数
+		\begin{itemize}
+		\item 提示：平方根的运算结果是浮点数，不能直接和整数比较
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{print}}
+	\linespread{1.25}
+	\begin{lstlisting}[style=pythonstyle, gobble=4]
+	print(value, ..., sep=' ', end='\n', file=sys.stdout, flush=False)}
+	\end{lstlisting}
+	\
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 通过
+				\inlinePython{help(print)}
+				获得\inlinePython{print}的使用说明（上方）
+			\item \inlinePython{end='\n'}
+				代表名为\inlinePython{end}的参数的默认值是\inlinePython{'\n'}
+			\item 按q退出help
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			参数说明
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			value	打印的数值
+			...		后面可以有很多位
+			sep		分割的字符
+			end		结尾的字符
+			file 	打印的文件
+			flush	是否直接输出
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{print}实验}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			import time
+			while 1 :
+				print('a', 'b')
+				time.sleep(0.5)
+
+			while 1 :
+				print('a', end='')
+				time.sleep(0.5)
+
+			while 1 :
+				print('a', end='', flush=True)
+				time.sleep(0.5)
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\linespread{2}
+			\begin{itemize}
+			\item \inlinePython{while 1} 代表无限循环
+				\begin{itemize}
+				\item 按下\inlinePython{Crtl + C}停止
+				\end{itemize}
+			\item 没有换行时\inlinePython{print}不输出
+				\begin{itemize}
+				\item 通过\inlinePython{flush}解决
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{方便的函数}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 传入\inlinePython{tuple}或\inlinePython{list}
+		\begin{itemize}
+		\item \inlinePython{all			any}
+		\item \inlinePython{max			min}
+		\item e.g. \inlinePython{all([0, 1, 2])}
+		\item 别忘了\inlinePython{help}
+		\end{itemize}
+	\item 传入任何对象
+		\begin{itemize}
+		\item \inlinePython{id			hash}
+		\end{itemize}
+	\item 更多信息：\link{https://docs.python.org/3/library/functions.html}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{input}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 语法
+		\begin{itemize}
+		\item \inlinePython{input()} 或 \inlinePython{input(prompt)}
+		\item 然后输入一行文字
+		\end{itemize}
+	\item 作用
+		\begin{itemize}
+		\item 读入输入用户的值
+		\item 可以在前面加一条提示
+		\end{itemize}
+	\item 示例
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		a = input('@\color[HTML]{ff0bff}输入一个整数:@')	# str
+		b = int(a)				   # int
+		print('@\color[HTML]{ff0bff}这个整数减1是@' + str(b - 1))
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{open}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \inlinePython{open}可以打开文件
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		a = open('a.txt','w')	# 用写入模式打开文件
+		a.write('hello')		# 写入文字
+		a.close()				# 关闭文件
+		open('a.txt').read()	# 打开文件并读取
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{os.system}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \inlinePython{os}是一个和系统有关的模块
+		\begin{itemize}
+		\item 用 \inlinePython{import os} 引用
+		\item 试一试 \inlinePython{help(os)}
+		\end{itemize}
+	\item 常用命令
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	os.system('ls')	# ls 命令列出当前目录的文件
+	os.walk('.')	# . 是一个目录
+	\end{lstlisting}
+	\item 更多：\link{https://docs.python.org/3/library/os.html}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{open}和\inlinePython{os}练习}
+	\begin{enumerate}
+	\item 用\inlinePython{open}创建以下10个文件 \\
+		\texttt{1.txt, 2.txt, ..., 10.txt}
+	\item 用\inlinePython{os}将他们更名为 \\
+		\texttt{1.out, 2.out, ..., 10.out}
+	\item 将他们删除
+	\end{enumerate}
+	\begin{itemize}
+	\item Windows下获取命令提示
+		\begin{itemize}
+		\item \texttt{rename /?}
+		\item \texttt{erase /?}
+		\end{itemize}
+	\item Linux下获取命令提示
+		\begin{itemize}
+		\item \texttt{mv --help}
+		\item \texttt{rm --help}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{in}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 尝试这些代码，尝试总结\inlinePython{in}的作用
+		\begin{lstlisting}[style=pythonstyle, gobble=8]
+		a = "HCC, I'm. "
+		'HCC' in a
+		'hcc' in a
+		3 in [1, 3, 5]
+		3 in [3]
+		[3] in [3]
+		b = {1: 2, 2: 3}
+		2 in b
+		3 in b
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

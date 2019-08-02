@@ -1,0 +1,223 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 7}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.25}
+	\begin{enumerate}
+	\item 按照最后一个元素的大小排序
+		\begin{itemize}
+		\item \inlinePython{a = [(1, 2), (4, ), (6, 5, 3), [1]]}
+		\end{itemize}
+	\item 将3进制转为8进制
+		\begin{itemize}
+		\item \inlinePython{'20122011201020'}
+		\end{itemize}
+	\item 将字符串变为字节
+		\begin{itemize}
+		\item \begin{lstlisting}[style=pythonstyle, gobble=8, escapechar=@]
+		'@\color[HTML]{ff0bff}十一圈@'
+		\end{lstlisting}
+		\end{itemize}
+	\item 用以下格式输出当前时间
+		\begin{itemize}
+		\item 小时.分钟
+		\end{itemize}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{随机}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 函数
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		import random
+		random.randint
+		random.sample
+		# 使用 help 探索
+		\end{lstlisting}
+	\item 提示
+		\begin{itemize}
+		\item \inlinePython{randint} 会取到左右短点
+		\item \inlinePython{randrange} 不会取右短点
+		\item \inlinePython{sample} 可以取数组中的多个项目
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{sys}}
+	\begin{itemize}
+	\item 常用用法
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		import sys
+		sys.stdin		# 标准输入
+		sys.stdout		# 标准输出
+		sys.argv		# 命令参数
+		\end{lstlisting}
+	\item \inlinePython{argv}示例
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		$ cat > a.py	# 编辑 a.py
+		import sys
+		print(sys.argv)
+		$ python3 a.py hello HCC    Im
+		['a.py', 'hello', 'HCC', 'Im']
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{uuid}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \inlinePython{uuid}用来生成唯一标识符
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		import uuid
+		uuid.uuid1()		# str() 可将其转换为文本
+		help(uuid)			# 探索uuid2等函数
+		\end{lstlisting}
+	\item 应用：十一圈的分享链接
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		def uuid_create():
+			while True:
+				u = uuid.uuid1()
+				s = str(u)[0: 8]
+				if ... :		# 确认没有重复
+					return s
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{getch}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \inlinePython{getch}可以从键盘读入一个字符，不需按回车
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		import getch
+		getch.getch()		# 不会输出到屏幕
+		getch.getche()		# 获取字符并输出到屏幕
+		\end{lstlisting}
+	\item 需要额外安装软件包：\texttt{pip3 install getch}
+	\item 任务
+		\begin{itemize}
+		\item 制作不回显的密码输入器
+		\item 用户按下回车时退出，并返回用户已输入的密码
+		\end{itemize}
+	\item 提高
+		\begin{itemize}
+		\item 支持退格
+		\item 支持左右键移动光标
+		\end{itemize}
+	\end{itemize}
+\begin{comment}
+import getch
+def getpass() :
+	l, r = '', ''
+	while True :
+		c = getch.getch()
+		if c == '\n' :
+			return l + r
+		elif c == '\x7f' :
+			l = l[:-1]
+		elif c == '\x1b' :	# Backspace
+			assert getch.getch() == '['
+			c = getch.getch()
+			if c == 'C' :	# Right
+				if r :
+					l += r[0]
+					r = r[1:]
+			elif c == 'D' :	# Left
+				if l :
+					r = l[-1] + r
+					l = l[:-1]
+			elif c == '3' :	# Delete
+				assert getch.getch() == '~'
+				r = r[1:]
+		else :
+			l += c
+\end{comment}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{qrcode}}
+	\linespread{1.5}
+	\begin{itemize}
+	\item \inlinePython{qrcode}用来生成二维码
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		import qrcode
+		qrcode.run_example('@\color[HTML]{ff0bff}内容字符串@')
+		\end{lstlisting}
+	\item 需要额外安装软件包：\texttt{pip3 install qrcode}
+	\item 十一圈的二维码都是通过这个工具生成的
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		qrcode.make		# 生成可保存的图像
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{提示}
+	\begin{itemize}
+	\item 尝试
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		1 + 1
+		3 * _		# 下划线表示上次运算结果
+		_ = 'HCC'
+		1 + 1
+		1 + _		# 被污染了
+		\end{lstlisting}
+	\item 解决
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		del(_)
+		1 + 1
+		1 + _		# 恢复了
+		\end{lstlisting}
+	\item 除了 \inlinePython{_} ，还适用于
+		\inlinePython{int list max os ...}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{连线：这些功能可以做什么}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{enumerate}
+			\item 产生随机数
+			\item 制造唯一链接
+			\item 安全输入密码
+			\item 生成二维码
+			\item 架设一个网站
+			\end{enumerate}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item \inlinePython{uuid}
+			\item \inlinePython{qrcode}
+			\item \inlinePython{python3}
+			\item \inlinePython{getch}
+			\item \inlinePython{random}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

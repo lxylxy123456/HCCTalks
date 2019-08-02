@@ -1,0 +1,464 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 9}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{函数式编程}
+	　　\href{https://zh.wikipedia.org/wiki/\%E5\%87\%BD\%E6\%95\%B0\%E5\%BC\%8F\%E7\%BC\%96\%E7\%A8\%8B}{函数式编程}或称函数程序设计，又称泛函编程，是一种编程典范，它将电脑运算视为数学上的函数计算，并且避免使用程序状态以及易变物件。函数程式语言最重要的基础是λ演算（lambda calculus）。而且λ演算     的函数可以接受函数当作输入（引数）和输出（传出值）。
+
+	　　比起指令式编程，函数式编程更加强调程序执行的结果而非执行的过程，倡导利用若干简单的执行单元让计算结果不断渐进，逐层推导复杂的运算，而不是设计一个复杂的执行过程。
+
+	　　（以上内容来自维基百科）
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Python Build-in Functions}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.333333\textwidth}
+			多 $\to$ 一
+			\begin{itemize}
+				\item \inlinePython{all}
+				\item \inlinePython{any}
+				\item \inlinePython{len}
+				\item \inlinePython{min}
+				\item \inlinePython{max}
+				\item \inlinePython{sum}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.333333\textwidth}
+			多 $\to$ 多
+			\begin{itemize}
+				\item \inlinePython{enumerate}
+				\item \inlinePython{filter}
+				\item \inlinePython{map}
+				\item \inlinePython{reversed}
+				\item \inlinePython{sorted}
+				\item \inlinePython{zip}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.333333\textwidth}
+			其他
+			\begin{itemize}
+				\item \inlinePython{range}
+				\item \inlinePython{slice}
+				\item \inlinePython{yield}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{all}, \inlinePython{any}, \inlinePython{len}}
+	\linespread{1.5}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	all					# 是否所有元素都为真
+	all([1, 2, 3])		# True
+	all([1, 2, ''])		# False
+
+	any					# 是否有任何元素为真
+	any([0, ''])		# False
+	any([0, 1])			# True
+
+	len					# 复杂数据类型的长度
+	len([0, 'a', 9])	# 3
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{max}, \inlinePython{min}, \inlinePython{sum}}
+	\linespread{1.5}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	max					# 最大值
+	max([1, 2, 3])		# 3
+
+	min					# 最小值
+	min([1, 2, 3])		# 1
+
+	sum					# 总和
+	sum([1, 2, 3])		# 6
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{sorted}, \inlinePython{reversed}}
+	\linespread{1.5}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	sorted				# 排序元素
+	k = lambda x: x[-1]	# 根据最后一个元素排序
+	sorted([(9, 3), (4, ), (2, 5)], key=k)
+
+	reversed			# 反转元素
+	reversed([(9, 3), (4, ), (2, 5)])
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{lambda}表达式}
+	\linespread{1.5}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	lambda 参数列表: 函数返回值
+	pow = lambda x, y: x ** y
+	f = lambda x: x ** 2 + 3 * x + 1
+	\end{lstlisting}
+	\begin{itemize}
+	\item 函数 \inlinePython{f} 在数学上相当于 $f(x) = x^2 + 3\,x + 1$
+	\item 优点：代码简洁
+	\item 缺点：无法进行复杂运算
+	\item 提示：不要滥用\inlinePython{lambda}表达式，否则别人会很难理解你的代码
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{reversed}实践}
+	\linespread{1.25}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> reversed([1, 2, 3])
+	<list_reverseiterator object at 0x123456789AB>
+	>>> # 这时返回的是一个iter的生成器，需要手动转换格式
+	>>> # 一般用list函数转换格式
+	>>> # 在特殊情况下可以用next
+	>>> list(reversed([1, 2, 3]))
+	[3, 2, 1]
+	>>> 
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{enumerate}}
+	\begin{itemize}
+	\item \inlinePython{enumerate}插入序号
+	\item 输入
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		['a', 'b', 'c']
+		\end{lstlisting}
+	\item 输出
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		[
+			(0, 'a'), 
+			(1, 'b'), 
+			(2, 'c'), 
+		]
+		\end{lstlisting}
+	\item 例：带序号打印列表
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		for i, j in enumerate(['a', 'b', 'c']) :
+			print(i, j)
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{zip}}
+	\begin{itemize}
+	\item \inlinePython{zip}可以拼接列表
+	\begin{columns}
+		\begin{column}[T]{.1\textwidth}
+		\end{column}
+		\begin{column}[T]{.4\textwidth}
+			\begin{itemize}
+			\item 输入
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			[1, 2, 3]
+			[6, 7, 8]
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.4\textwidth}
+			\begin{itemize}
+			\item 输出
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			[
+				(1, 6), 
+				(2, 7), 
+				(3, 8), 
+			]
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.1\textwidth}
+		\end{column}
+	\end{columns}
+	\item 例：同时打印两个列表
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		A = [1, 2]
+		B = ['a', 'b']
+		for i, j in zip(a, b) :
+			print(i)
+			print(j)
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{map}}
+	\begin{itemize}
+	\item \inlinePython{map}可以将列表的每个元素分别用同一个函数执行
+	\begin{columns}
+		\begin{column}[T]{.1\textwidth}
+		\end{column}
+		\begin{column}[T]{.4\textwidth}
+			\begin{itemize}
+			\item 输入
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			lambda x: x ** 2
+			[1, 2, 3, 4]
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.4\textwidth}
+			\begin{itemize}
+			\item 输出
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			[1, 4, 9, 16]
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.1\textwidth}
+		\end{column}
+	\end{columns}
+	\item 练习
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		a = range(100)
+		\end{lstlisting}
+		使用\inlinePython{map}、\inlinePython{sum}和\inlinePython
+		{lambda}，用一行程序求\inlinePython{a}的立方和
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{立方和解法}
+	\begin{columns}
+		\begin{column}[T]{.42\textwidth}
+			非函数式
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			s = 0
+			for i in range(a) :
+				s += i ** 3
+			print(s)
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.58\textwidth}
+			函数式
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			sum(map(lambda x: x**3, a))
+			\end{lstlisting}
+
+			\
+
+			展开后
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			sum(
+				map(
+					lambda x: x**3, 
+					a
+				)
+			)
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{filter}}
+	\begin{itemize}
+	\item \inlinePython{filter}可筛选元素
+	\begin{columns}
+		\begin{column}[T]{.1\textwidth}
+		\end{column}
+		\begin{column}[T]{.4\textwidth}
+			\begin{itemize}
+			\item 输入
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			lambda x: x > 4
+			[3, 4, 5, 6, 7]
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.4\textwidth}
+			\begin{itemize}
+			\item 输出
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			[5, 6, 7]
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.1\textwidth}
+		\end{column}
+	\end{columns}
+	\item 练习
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		a = range(1000)
+		\end{lstlisting}
+		不重复地打印出\inlinePython{a}中所有三\textbf{或}七的倍数
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{打印倍数解法}
+	\begin{columns}
+		\begin{column}[T]{.42\textwidth}
+			非函数式
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			for i in a :
+				if i % 3 == 0 :
+					print(i)
+				if i % 7 == 0 :
+					print(i)
+
+			# 尝试找出以上程序的一处错误
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.58\textwidth}
+			函数式
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			filter(lambda x: x % 3 == 0 or x % 7 == 0, a)
+			\end{lstlisting}
+
+			\
+
+			展开后
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			filter(
+				lambda x: x % 3 == 0 or 
+						  x % 7 == 0,
+				a
+			)
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{range}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \inlinePython{range}可以快速得到一个等差整数数列
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> range(1, 10, 2)
+	range(1, 10, 2)
+	>>> list(range(1, 10, 2))
+	[1, 3, 5, 7, 9]
+	>>> list(range(5, 3, -1))	# 反向
+	[5, 4]
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{slice}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \inlinePython{slice}即切片，和 \inlinePython{[a:b:c]} 相同
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+	>>> a[2: 7: 2]
+	[3, 5, 7]
+	>>> a[slice(2, 7, 2)]
+	[3, 5, 7]
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{yield}}
+	\begin{itemize}
+	\item \inlinePython{yield}在函数的返回值中添加元素
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	def f(x):
+		for i in range(x, 2 * x) :
+			yield(i)
+
+	def g(x):		# 不用yield的写法
+		ans = []
+		for i in range(x, 2 * x) :
+			ans.append(i)
+		return ans
+
+	list(f(3))		# [3, 4, 5]
+	g(3)			# [3, 4, 5]
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{练习}
+	\begin{itemize}
+	\item 以下程序可以干什么？
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	sum(filter(lambda x: x % 3 == 1, map(lambda x: x ** 2, range(20))))
+	\end{lstlisting}
+	\item 展开后
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	sum(
+		filter(
+			lambda x: x % 3 == 1, 
+			map(
+				lambda x : x ** 2, 
+				range(20)
+			)
+		)
+	)
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{iter}和\inlinePython{next}}
+	\begin{itemize}
+	\item \inlinePython{next}可以将复杂数据类型转换为生成器
+	\item \inlinePython{iter}可以遍历一个函数式编程得到的生成器
+	\item 也可以用\inlinePython{__iter__}和\inlinePython{__next__}
+	\end{itemize}
+	\begin{columns}
+		\begin{column}[T]{.5\textwidth}
+			\small
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			>>> a = [1, 2]
+			>>> b = a.__iter__()
+			>>> b.__next__()
+			1
+			>>> b.__next__()
+			2
+			>>> b.__next__()
+			Traceback (most recent call last):
+			  File "<stdin>", line 1, in <module>
+			StopIteration
+			>>> 
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\small
+			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
+			>>> a = [1, 2]
+			>>> b = iter(a)
+			>>> next(b)
+			1
+			>>> next(b)
+			2
+			>>> next(b)
+			Traceback (most recent call last):
+			  File "<stdin>", line 1, in <module>
+			StopIteration
+			>>> 
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

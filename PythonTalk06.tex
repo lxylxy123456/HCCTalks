@@ -1,0 +1,204 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 6}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.25}
+	\begin{enumerate}
+	\item 用\inlinePython{for}和\inlinePython{print}打印
+		\begin{itemize}
+		\item \inlinePython{1 2 4 8 16 32 64 }
+		\end{itemize}
+	\item 使用\inlinePython{input}获取输入字符串并判断其是否含\inlinePython{'HCC'}
+	\item 这些函数有什么作用？
+		\begin{itemize}
+		\item \inlinePython{all min any id hash}
+		\end{itemize}
+	\item 让命令行执行
+		\begin{lstlisting}[basicstyle=\ttfamily]
+		ping 10.60.0.0 -c 1
+		ping 10.60.0.1 -c 1
+		ping 10.60.0.2 -c 1
+		...
+		ping 10.60.0.255 -c 1
+		\end{lstlisting}
+	\end{enumerate}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{排序}
+	\linespread{1.25}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 如何排序这个数列？
+				\begin{itemize}
+				\item \inlinePython{a = [3, 1, 4, 2]}
+				\end{itemize}
+			\item 答案
+				\begin{itemize}
+				\item \inlinePython{a.sort()}
+				\end{itemize}
+			\item 提高：如何反向排序？
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			手动实现（选择排序）
+			\footnotesize
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			b = []
+			for i in range(len(a)) :
+				m = 0
+				for j in range(len(a)) :
+					if a[m] > a[j] :
+						m = j
+				b.append(a[m])
+				del(a[m])
+			a = b
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{函数}
+	\begin{itemize}
+	\item 函数相当于通过参数计算出返回值
+	\item 定义
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		def @函数名@(@参数1@, @参数2@, ...) :
+			@语句@
+			return @返回值@
+		\end{lstlisting}
+	\item 调用
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		@函数名@(@参数1@, @参数2@, ...)
+		\end{lstlisting}
+	\item 简便定义形式（lambda表达式）
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		@函数名@ = lambda @参数@... : @返回值@
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{特殊排序}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 如何按照tuple的第二位排序？
+		\begin{itemize}
+		\item \inlinePython{a = [(1, 2), (4, 9), (6, 7)]}
+		\end{itemize}
+	\item 方法1
+		\begin{itemize}
+		\item \inlinePython{a.sort(key = lambda x: x[1])}
+		\end{itemize}
+	\item 方法2
+		\begin{itemize}
+		\item 
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		def f(a) : 
+			return a[1]
+		a.sort(key=f)
+		\end{lstlisting}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{字符串编码问题}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 方法
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		a = '@\color[HTML]{ff0bff}你好@'
+		b = a.encode('@\color[HTML]{ff0bff}编码@')	# 将字符串变成二进制码
+		c = b.decode('@\color[HTML]{ff0bff}编码@')	# 将字节变成字符串
+		\end{lstlisting}
+	\item 常见编码
+		\begin{itemize}
+		\item UTF-8 （多语言通用）
+		\item GBK （中文）
+		\item GB2312 （中文）
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{进制转换}
+	\begin{itemize}
+	\item 从十进制转换
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		bin(1024)		# 二进制
+		oct(1024)		# 八进制
+		hex(1024)		# 十六进制
+		\end{lstlisting}
+	\item 转换为十进制
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		int('10', 2)	# 二进制的 10
+		int('0b10', 2)	# 二进制的 10
+		int('13', 7)	# 七进制的 13
+		\end{lstlisting}
+	\item 错误用法
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		int('0b10')		# 必须注明进制数
+		int('0x10', 2)	# 输入和注明进制数不匹配
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{时间}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 关于时间的库
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
+		from datetime import datetime
+		a = datetime.now()
+		b = datetime(@年@, @月@, @日@, ...)	# 输入整数
+		b = datetime(2000, 8, 24)	 # 例
+		datetime.fromtimestamp(@时间值@)# 数值转为时间
+		a.timestamp()				 # 时间转为数值
+		a - b						 # 计算时间差
+		a.strftime('%H:%M')			 # 输出为特定格式
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{练习}
+	\linespread{1.5}
+	\begin{enumerate}
+	\item 模拟网络攻击检测
+		\begin{itemize}
+		\item 假设某个用户上一次访问我方网站的时间已被记录为a
+		\item 我们希望判断用户两次访问的间隔是否大于一秒
+		\item 如果目前访问网站的时间在a后一秒之前，则输出``攻击''
+		\item 否则输出``正常''
+		\end{itemize}
+	\item 将时间输出为中文
+		\begin{itemize}
+		\item 例如对于 \inlinePython{a = datetime(2000, 8, 24, 12, 34, 56)}
+		\item 输出 ``2000年8月24日12时34分56秒''
+		\item 提示：尝试 \inlinePython{a.strftime('%Y %m %d %H:%M:%S')}
+		\end{itemize}
+	\end{enumerate}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

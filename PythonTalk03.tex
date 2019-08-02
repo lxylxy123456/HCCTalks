@@ -1,0 +1,237 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 3}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.7\textwidth}
+			\begin{itemize}
+			\item 如何创建一个元素\inlinePython{tuple}？
+			\item \inlinePython{tuple}和\inlinePython{list}有什么区别？
+			\item 如何合并\inlinePython{dict}？
+			\item 如何通过\inlinePython{'1234567890'}得到\inlinePython{'2468'}？
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.3\textwidth}
+			\begin{itemize}
+			\item \inlinePython{(1, )}
+			\item \inlinePython{list}可变
+			\item \inlinePython{update()}
+			\item \inlinePython{[1: 8: 2]}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{循环和判断}
+	\linespread{2}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 循环（PythonTalk3）
+				\begin{itemize}
+				\item \inlinePython{for}
+				\item \inlinePython{while}
+				\end{itemize}
+			\item 循环控制（PythonTalk4）
+				\begin{itemize}
+				\item \inlinePython{break}
+				\item \inlinePython{continue}
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 判断（PythonTalk4）
+				\begin{itemize}
+				\item \inlinePython{if}
+					\begin{itemize}
+					\item \inlinePython{else}
+					\item \inlinePython{elif}
+					\end{itemize}
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{while}}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 语法
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			while Expression :
+				Code
+				Code
+			Code
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 对比C语言
+			\begin{lstlisting}[style=cstyle, gobble=12]
+			while (Expression)
+			{
+				Code;
+				Code;
+			}
+			Code;
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{while}例子}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 求出3至35的奇数和
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	i = 3
+	s = 0
+	while i <= 35 :
+		s += i
+		i += 2
+	print(s)
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{while}练习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 计算以下数列的和
+		\begin{itemize}
+		\item \inlinePython{1, 3, 5, 7, 9, 11, ... , 95, 97, 99}
+		\item \inlinePython{1, 2, 4, 8, 16, ... , 256, 512, 1024}
+		\end{itemize}
+	\item 用\inlinePython{while}计算出这个字符串
+		\begin{itemize}
+		\item \inlinePython{'1,3,5,7,9,11,13,15,17,19,21,'}
+		\item 提示：\inlinePython{str(1)}的结果是\inlinePython{'1'}；用字符串加法
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{for}}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 语法
+			\begin{lstlisting}[style=pythonstyle, gobble=12]
+			for i in Object :
+				Code
+				Code
+			Code
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 对比C语言（差别很大）
+			\begin{lstlisting}[style=cstyle, gobble=12]
+			for (int i = 0; i < N; i += 1)
+			{
+				Code;
+				Code;
+			}
+			Code;
+			\end{lstlisting}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{for}例子}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 计算\inlinePython{[3, 1, 4, 1, 5, 9, 2, 6, 5]}的元素和
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	s = 0
+	for i in [3, 1, 4, 1, 5, 9, 2, 6, 5] :
+		s += i
+	print(s)
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{sum}函数}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 语法
+		\begin{itemize}
+		\item \inlinePython{sum(ListOfNumbers)}
+		\end{itemize}
+	\item 举例
+		\begin{itemize}
+		\item \inlinePython{sum([1, 3, 5])}
+		\end{itemize}
+	\item 对比
+		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
+		s = 0
+		l = [1, 3, 5]
+		for i in l :
+			s += i
+		print(s)
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{range}函数}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 尝试以下代码
+		\begin{itemize}
+		\item \inlinePython{for i in range(10): print(i)}
+		\item \inlinePython{for i in range(3, 10): print(i)}
+		\item \inlinePython{for i in range(3, 10, 2): print(i)}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{for}练习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 计算以下等差数列的和
+		\begin{itemize}
+		\item \inlinePython{1, 2, 3, 4, 5, 6, 7, ... 1365, 1366}
+		\item \inlinePython{11, 13, 15, 17, 19, ... 95, 97, 99}
+		\end{itemize}
+	\item 用\inlinePython{for}计算并打印这个字符串
+		\begin{itemize}
+		\item \inlinePython{'1,3,5,7,9,11,13,15,17,19,21,'}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+
