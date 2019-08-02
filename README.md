@@ -1,6 +1,13 @@
 # HCC Talks
 * Note: currently all talks are in Chinese
 * All talks are to be written in LaTeX beamer
+* Old talk files (written in LibreOffice Impress) are in odp branch
+
+## Make
+* Run `make ALL` to generate all pdf files to `/tmp/` directory
+* Run `make clean_tmp` to remove all temporary files
+* Run `make clean` to remove all generated files
+* To generate 16:9 version, remove comment on second line of `LatexConfig.tex`
 
 ## PythonTalk
 * 1	基本类型 (int, float, bool)

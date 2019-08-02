@@ -1,0 +1,234 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Bash Talk 1}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame}
+	\frametitle{Bash 是什么？}
+	\linespread{2}
+	\begin{itemize}
+	\item Bash是广泛用于Linux和OS X的命令行软件
+	\item Bash是开源软件，可以自由复制和更改
+	\item Bash可以轻松处理各种系统任务
+		\begin{itemize}
+		\item 例如文件更名、网页下载、远程控制
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{一切皆为文件}
+	\linespread{2}
+	\begin{itemize}
+	\item \href{https://en.wikipedia.org/wiki/Everything\_is\_a\_file}
+				{Everything is a file}
+	\item Unix的设计观念是一切皆为文件
+		\begin{itemize}
+		\item 甚至是你的U盘
+		\end{itemize}
+	\item 因此，bash的设计主要基于文件
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Linux \& Fedora}
+	\linespread{2}
+	\begin{itemize}
+	\item 我们推荐使用主流开源操作系统Linux
+	\item Fedora是我们常用的Linux发行版本
+	\item Bash是为Linux设计的，也可用于Windows
+	\item Windows使用Bash需要额外软件
+		\begin{itemize}
+		\item 我们会在Git经验交流会介绍安装方法
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{目录访问}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl]
+		cd		# 跳转到目录
+		pwd		# 查看当前目录
+		ls		# 查看目录的文件
+		ll		# 文件详细信息
+		\end{lstlisting}
+	\item 这些命令不会改磁盘
+	\item 示例
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl]
+		cd /dev
+		pwd
+		cd		# 到主目录
+		ls /etc
+		ls
+		ll /etc
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{这些命令如何工作}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 语法
+	\begin{lstlisting}[style=bashstyle, gobble=4, escapechar=@]
+	ls [@选项@] [@文件名@...]
+	\end{lstlisting}
+	\item 举例
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	ls -l /				# 相当于ll
+	ls /home/hcc -a		# 前后都可以
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{关于\inlineBash{ll}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 第一行：占用大小
+	\item 第1列：文件属性和权限
+		\begin{itemize}
+		\item 见英文维基百科：\href{https://en.wikipedia.org/wiki/Chmod}{chmod}
+		\end{itemize}
+	\item 第2列：硬链接数量
+		\begin{itemize}
+		\item 内部文件（夹）数量+1
+		\end{itemize}
+	\item 第3列：所属用户组
+	\item 第4列：所属用户
+	\item 第5列：占用空间（B）
+	\item 第6至8列：修改时间
+	\item 第9列：名称
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{更加高级的命令}
+	\begin{itemize}
+	\item \inlineBash{cd /etc}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	tree			# 获取目录树
+	find			# 递归查找文件
+	du				# 查看文件大小
+	df				# 磁盘使用情况
+	\end{lstlisting}
+	\item 这些命令不会改磁盘
+	\item 选项
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	tree -d
+	du --max-depth=1
+	df -h			# 适用面很广
+	\end{lstlisting}
+	\item 思考：Windows中有吗？
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{创建文件和目录}
+	\begin{itemize}
+	\item \inlineBash{cd /tmp}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	cat > @\color[HTML]{ff0bff}文件名@		# 创建文件
+					 # 输入文本，然后按Ctrl + D
+	cat @\color[HTML]{ff0bff}文件名@		# 打印文件内容
+	mkdir @\color[HTML]{ff0bff}目录名@		# 创建目录
+	\end{lstlisting}
+	\item 尝试（请严格按照下面的代码操作）
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	cd /tmp
+	cat > a
+	mkdir b
+	mkdir b/c
+	cat > b/d
+	tree
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{管理文件和目录}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令（执行每一行后可以用\inlineBash{tree}查看效果）
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	mv a b				# 移动文件a到目录b
+	mv b/a b/e			# 将b中的a更名为e
+	cp b/e f			# 将b中的a复制到f
+	cp b g -r			# 复制目录b到g
+	rm f				# 删除文件f
+	rm g -r				# 删除目录g，可尝试-f
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{这些命令可以干什么}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
+			ll		ls		pwd
+			du		df		tree
+			cat		rm		mkdir
+			mv		cp		find
+			cd
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 查看目录树和其他信息
+			\item 查看磁盘空间
+			\item 复制、移动和删除文件
+			\item 创建目录
+			\item 切换工作目录
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{这些命令可以干什么}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
+			ll		ls		pwd
+			du		df		tree
+			cat		rm		mkdir
+			mv		cp		find
+			cd
+			\end{lstlisting}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 完成Windows可以做到的任何事情
+			\item 并超越Windows
+				\begin{itemize}
+				\item 分析空间
+				\item 批量操纵
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+
