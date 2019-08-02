@@ -2,7 +2,9 @@ PYTHON_TALK_SOURCES = $(wildcard PythonTalk*.tex)
 
 BASH_TALK_SOURCES = $(wildcard BashTalk*.tex)
 
-TARGETS = $(PYTHON_TALK_SOURCES:%.tex=/tmp/%.pdf)
+SOURCES = $(PYTHON_TALK_SOURCES) $(BASH_TALK_SOURCES)
+
+TARGETS = $(SOURCES:%.tex=/tmp/%.pdf)
 
 all:
 
