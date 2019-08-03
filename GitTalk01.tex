@@ -1,0 +1,252 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Git Talk 1}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{Git是什么}
+	\linespread{1.5}
+	\begin{itemize}
+	\item Git是目前世界上最先进的分布式版本控制系统
+		\begin{itemize}
+		\item 来自\href{https://www.liaoxuefeng.com/wiki/896043488029600}
+						{廖雪峰的官方网站}教程
+		\item HCC目前的所有项目，包括幻灯片都在用Git管理
+		\end{itemize}
+	\end{itemize}
+	
+	\
+	
+	\centerline{\includesvg{asserts/git-logo}}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Git设计理念}
+	\linespread{1.5}
+	\begin{itemize}
+	\item Git的项目管理方式
+		\begin{itemize}
+		\item 工作区
+		\item 暂存区
+		\item 版本库
+		\end{itemize}
+	\item 例
+	\linespread{0}
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	shiyiquan			 # 项目目录
+	@├─@.git@　@			 # 隐藏目录
+	@│　├─@暂存区@　　@		# 临时存储
+	@│　└─@版本库@　　@		# 永久存储
+	@│　　　├─@98d22f3		  # 一个版本
+	@│　　　└─@118532c		  # 另一个版本
+	@├─@shiyiquan@　@		 # 工作区文件
+	@└─@README.md@　@		 # 可随意更改
+	\end{lstlisting}
+	\linespread{1.5}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{基础操作}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 创建版本库
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	mkdir hcc	# 创建项目目录
+	cd hcc		# cd 进去
+	git init	# 创建git目录结构
+	\end{lstlisting}
+	\item 开始工作
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	cat > jkl	# 假设jkl是我们正在编写的文件
+	\end{lstlisting}
+	\item 提交代码
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	git add jkl		# 工作区$\to$暂存区
+	git add -A		# 添加全部文件
+	git commit		# 暂存区$\to$版本库
+					# 第一次提交需设置用户
+					# 和vi操作一样
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{状态查看}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	git status		# 检查状态
+	git @diff@		# 对比工作区和暂存区
+	git log			# 查看版本库日志
+	\end{lstlisting}
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	cat >> tmp		# 输入一些内容
+	git add -A
+	cat >> tmp		# 再输入一些内容
+	git status
+	git @diff@
+	git log			# 按q退出
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{高级选项}
+	\linespread{1.5}
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	git log
+		--oneline	# 摘要模式（左侧是版本号的前几位）
+		--graph		# 显示版本关系图（在复杂时后很有用）
+	git commit
+		-m "@\color{Pink}提交说明@"	# 不进入vi
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{回溯}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	git reset --hard 版本号
+	HEAD^		# 当前版本的前一个版本
+	HEAD~10		# 前10个版本
+	\end{lstlisting}
+	\item 回溯后将很难看到更靠后的版本
+	\item 查看操作记录
+		\begin{itemize}
+		\item \inlineBash{git reflog}
+		\item 可以看到以后的版本并跳转回去
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{连接远程版本库}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 通过连接提供git服务的服务器和开发团队同步代码
+		\begin{itemize}
+		\item \inlineBash{git remote add origin 链接}
+		\end{itemize}
+	\item 如何获得链接
+		\begin{itemize}
+		\item 服务商一般会提供链接，复制粘贴即可
+		\item 一般链接是有规律的，例如
+			\begin{itemize}
+			\item \texttt{https://github.com/用户/项目.git}
+			\item \texttt{git@github.com:用户/项目.git}
+			\end{itemize}
+		\item 链接甚至可以是一个本地的git目录
+		\item ``\texttt{origin}''是链接的名称，用于快速访问链接
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{推送和接收}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 推送
+		\begin{itemize}
+		\item \inlineBash{git push origin master}
+		\item 将当前所在分支推送到origin的master分支
+		\end{itemize}
+	\item 接收
+		\begin{itemize}
+		\item \inlineBash{git pull origin master}
+		\item 将origin的master分支拉到当前分支
+		\end{itemize}
+	\item ``master''是默认分支名称
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{分支}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 分支可以代表不同阶段的代码，可以互相合并
+	\item 创建
+		\begin{itemize}
+		\item \inlineBash{git branch dev}
+		\item 从当前分支创建dev分支
+		\end{itemize}
+	\item 跳转
+		\begin{itemize}
+		\item \inlineBash{git checkout dev}
+		\item 切换到dev分支
+		\end{itemize}
+	\item 合并
+		\begin{itemize}
+		\item \inlineBash{git merge master}
+		\item 将master分支合并到当前分支
+		\item 从网络拉取（\inlineBash{git pull}）也可能会合并分支
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{分支练习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 从master开始执行
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	git branch dev
+	echo "master ver" >> jkl
+	git commit -am "Master"	# -am相当于add后提交
+	git checkout dev		# jkl变了
+	echo "dev version" >> jkl
+	git commit -am "Dev"
+	git merge master		# 出现冲突
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{冲突}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 冲突后git会提示冲突的文件，只要按照标记手动合并然后重新提交即可
+	\begin{lstlisting}[basicstyle=\ttfamily, gobble=4, texcl, escapechar=@]
+	@\color{Pink}<<<<<<< HEAD@			# 当前分支
+	dev version
+	@\color{Pink}=======@				 # 分割线
+	master ver
+	@\color{Pink}>>>>>>> master@		  # 合并分支
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{其它功能}
+	\linespread{1.5}
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	git tag					# \href
+	{https://www.liaoxuefeng.com/wiki/896043488029600/900788941487552}{标记代码版本}
+	git stash				# \href
+	{https://www.liaoxuefeng.com/wiki/896043488029600/900785521032192}{隐藏版本}
+	git config				# 自定义git
+	.gitignore				# \href
+	{https://www.liaoxuefeng.com/wiki/896043488029600/900004590234208}{忽略文件}
+	git grep				# 全文搜索
+	\end{lstlisting}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+
