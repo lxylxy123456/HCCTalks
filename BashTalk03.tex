@@ -76,7 +76,7 @@
 	@\color{Pink}程序@ &> @\color{Pink}文件　@	# 指定 stderr + stdout
 	\end{lstlisting}
 	\item 尝试
-	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
 	cd /tmp				# 确保此目录里有一些文件
 	ls -l > a
 	head -n3 < a > b
@@ -178,7 +178,7 @@
 	\small
 	\begin{itemize}
 	\item \inlineBash{/dev}
-		\begin{lstlisting}[style=bashstyle, gobble=8, texcl, escapechar=@]
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl]
 		null			# 黑洞（吞没数据）
 		zero			# 白洞（输出\textquotesingle{\textbackslash}0\textquotesingle）
 		random			# 输出随机字符（更随机）
@@ -188,7 +188,7 @@
 		sr0				# 光盘
 		\end{lstlisting}
 	\item \inlineBash{/etc}
-		\begin{lstlisting}[style=bashstyle, gobble=8, texcl, escapechar=@]
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl]
 		passwd			# 用户登录方式
 		shadow			# 用户密码
 		hosts			# 修改DNS
@@ -206,7 +206,7 @@
 	\begin{columns}[T]
 		\begin{column}[T]{.5\textwidth}
 			挂载点和对应的设备
-			\begin{lstlisting}[style=bashstyle, gobble=12, texcl, escapechar=@]
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
 			/			/dev/sda1
 			/home		/dev/sda2
 			/mnt/USB	/dev/sdb1
@@ -244,14 +244,14 @@
 			\end{itemize}
 		\end{column}
 		\begin{column}[T]{.5\textwidth}
-			\begin{lstlisting}[style=bashstyle, gobble=12, texcl, escapechar=@]
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
 			*		?		/	//
 			~		;		<	<<
 			.		..		>	>>
 			uname	top		ps -aux
 			sleep	time	date
 			sync	lspci
-			free	ifconfig	
+			free	ifconfig
 			\end{lstlisting}
 		\end{column}
 	\end{columns}

@@ -186,10 +186,10 @@
 	\frametitle{解法}
 	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl, escapechar=@]
 	for i in a.split('<tbody>')[2] \
-		.split('</tbody>')[0].split('<tr>')[1:] : 
-		print('curl %s > %s' % 
+		.split('</tbody>')[0].split('<tr>')[1:] :
+		print('curl %s > %s' %
 			('http://c.hcc.io' + \
-			i.split('href="')[1].split('"')[0], 
+			i.split('href="')[1].split('"')[0],
 			i.split('<h5>')[2].split('</h5>')[0]))
 	\end{lstlisting}
 	\begin{itemize}

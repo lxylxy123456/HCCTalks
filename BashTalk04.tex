@@ -1,0 +1,207 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Bash Talk 4}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 如何……？
+				\begin{itemize}
+				\item 查看进程信息
+				\item 查看网络连接
+				\item 将数据输出到文件
+				\item 依次执行两个命令
+				\item 访问父目录
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
+			*		?		/	//
+			~		;		<	<<
+			.		..		>	>>
+			uname	top		ps -aux
+			sleep	time	date
+			sync	lspci
+			free	ifconfig
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{用户变更}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	su @用户　@		# 变成某个用户（默认root）
+	sudo @命令　@	# 用root执行命令
+	\end{lstlisting}
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	su root		 # 切换为用户
+	su hcc		 # root 不用输密码
+	exit		 # 退出 su hcc
+	exit		 # 退出 su root
+	sudo su
+	exit		 # 退出 sudo su
+	su hcc		 # 需要密码
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{历史记录}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 方法
+		\begin{itemize}
+		\item 按动上下键
+		\item 文件 \inlineBash{.bash_history}
+		\item \inlineBash{history}
+		\end{itemize}
+	\item 问题：后两个有什么区别？
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	history
+	cat .bash_history
+	echo "HCC, I'm"
+	echo "HCC"
+	history
+	cat .bash_history
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{软件包管理}
+	\linespread{1.25}
+	\begin{itemize}
+	\item Linux：我们将介绍 Fedora 上的软件包管理方式
+		\begin{itemize}
+		\item Fedora 22 之前应使用 \inlineBash{yum} 而非 \inlineBash{dnf}
+		\end{itemize}
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	rpm -aq					  # 查看已安装软件包
+	sudo yum install @程序@ ...@　@# 安装
+	sudo yum update			  # 更新
+	sudo yum remove @程序@ ...@　@ # 卸载
+	\end{lstlisting}
+	\item Windows
+		\begin{itemize}
+		\item 安装：浏览器上用搜索引擎搜索软件名，下载（可能需要付费），安装
+		\item 卸载：``卸载或更改程序'' $\to$ 选中一个程序 $\to$ 卸载
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{7-Zip}
+	\begin{itemize}
+	\item 使用\inlineBash{7za}命令处理压缩包
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	7za a @\color{Pink}压缩包.7z@ @\color{Pink}文件@ ...@　@	# 压缩
+	7za l @\color{Pink}压缩包.7z@			 # 列出内容
+	7za x @\color{Pink}压缩包.7z@			 # 提取
+	7za t @\color{Pink}压缩包.7z@			 # 检测是否损坏
+	\end{lstlisting}
+	\item 探索：压缩时如何指定压缩率？
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	# 创建一个包含一些文件的目录，命名为 mydoc
+	7za a mydoc.7z mydoc
+	7za l mydoc.7z
+	7za t mydoc.7z
+	mv mydoc.7z /tmp
+	7za x /tmp/@\color{Pink}m*.7z@
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlineBash{nano}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 使用 \inlineBash{nano} 编辑文本
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	nano
+	nano @\color{Pink}文件@
+	\end{lstlisting}
+	\item 如何探索 \inlineBash{ls} 的排序功能？
+		\begin{itemize}
+		\item 用 \inlineBash{nano} 在 \inlineBash{man ls} 中查找 ``\texttt{sort}''
+		\end{itemize}
+	\item 操控按键
+	\begin{lstlisting}[basicstyle=\ttfamily]
+	Ctrl + X	退出
+	Ctrl + O	保存（输入路径）
+	Ctrl + W	搜索
+	Ctrl + \	替换
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlineBash{wget}}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \inlineBash{wget}可以下载网页
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	wget 网址
+	wget 网址 -r		# 递归下载
+	wget 网址 -rl 3		# 深度为3
+	\end{lstlisting}
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	# 如果 shiyiquan.net 无法访问，试试 shierquan.tk 或者别的网站
+	wget shiyiquan.net
+	wget shiyiquan.net -r -l 1
+	@递归下载维基百科？@
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{连线：使用这些命令可以干什么？}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 编辑文档（记事本）
+			\item 下载网页（浏览器）
+			\item 安装软件（控制面板？）
+			\item 切换用户（无）
+			\item （括号内为Windows中有相应功能的程序）
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item \inlineBash{yum / dnf}
+			\item \inlineBash{nano}
+			\item \inlineBash{su / sudo}
+			\item \inlineBash{wget}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

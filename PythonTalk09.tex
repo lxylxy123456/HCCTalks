@@ -127,7 +127,7 @@
 	>>> # 在特殊情况下可以用next
 	>>> list(reversed([1, 2, 3]))
 	[3, 2, 1]
-	>>> 
+	>>>
 	\end{lstlisting}
 \end{frame}
 
@@ -142,9 +142,9 @@
 	\item 输出
 		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl]
 		[
-			(0, 'a'), 
-			(1, 'b'), 
-			(2, 'c'), 
+			(0, 'a'),
+			(1, 'b'),
+			(2, 'c'),
 		]
 		\end{lstlisting}
 	\item 例：带序号打印列表
@@ -176,9 +176,9 @@
 			\item 输出
 			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
 			[
-				(1, 6), 
-				(2, 7), 
-				(3, 8), 
+				(1, 6),
+				(2, 7),
+				(3, 8),
 			]
 			\end{lstlisting}
 			\end{itemize}
@@ -257,7 +257,7 @@
 			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
 			sum(
 				map(
-					lambda x: x**3, 
+					lambda x: x**3,
 					a
 				)
 			)
@@ -327,7 +327,7 @@
 			展开后
 			\begin{lstlisting}[style=pythonstyle, gobble=12, texcl]
 			filter(
-				lambda x: x % 3 == 0 or 
+				lambda x: x % 3 == 0 or
 						  x % 7 == 0,
 				a
 			)
@@ -399,9 +399,9 @@
 	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
 	sum(
 		filter(
-			lambda x: x % 3 == 1, 
+			lambda x: x % 3 == 1,
 			map(
-				lambda x : x ** 2, 
+				lambda x : x ** 2,
 				range(20)
 			)
 		)
@@ -431,7 +431,7 @@
 			Traceback (most recent call last):
 			  File "<stdin>", line 1, in <module>
 			StopIteration
-			>>> 
+			>>>
 			\end{lstlisting}
 		\end{column}
 		\begin{column}[T]{.5\textwidth}
@@ -447,7 +447,7 @@
 			Traceback (most recent call last):
 			  File "<stdin>", line 1, in <module>
 			StopIteration
-			>>> 
+			>>>
 			\end{lstlisting}
 		\end{column}
 	\end{columns}
