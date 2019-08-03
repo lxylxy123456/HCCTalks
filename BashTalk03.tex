@@ -1,0 +1,268 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Bash Talk 3}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{复习}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 什么命令可以……？
+				\begin{itemize}
+				\item 在文件中查找
+				\item 得到一个文件的末尾
+				\item 动态浏览文件
+				\item 计算文件的哈希值
+				\item 对比文件
+				\item 统计文件大小
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl]
+			grep	head	tail
+			less	nano	vi
+			cut		wc		md5sum
+			diff	more
+			hexdump
+			sha1sum
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{用命令管理系统}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 命令
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	uname		# 系统版本
+	top			# 系统信息
+	ps -aux		# 列出进程
+	sync		# 同步数据
+	ifconfig	# 网络信息
+	lspci		# 设备信息
+	free		# 内存用量
+	\end{lstlisting}
+	\item 参数
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	uname -r	# 内核版本
+	uname -a	# 列出所有
+	free -h		# 可读性高
+	\end{lstlisting}
+	\item 提示：尝试在\inlineBash{top}中按方向键
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{数据流重导向}
+	\begin{itemize}
+	\item 符号
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	@\color{Pink}程序@ < @\color{Pink}文件　@		# 指定 stdin 为文件
+	@\color{Pink}程序@ << @\color{Pink}字符串@	# 指定 EOF 为字符串
+	@\color{Pink}程序@ > @\color{Pink}文件　@		# 指定 stdout 为文件
+	@\color{Pink}程序@ >> @\color{Pink}文件　@	# 追加模式
+	@\color{Pink}程序@ 2> @\color{Pink}文件　@	# 指定 stderr
+	@\color{Pink}程序@ &> @\color{Pink}文件　@	# 指定 stderr + stdout
+	\end{lstlisting}
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	cd /tmp				# 确保此目录里有一些文件
+	ls -l > a
+	head -n3 < a > b
+	tail << hcc			# 输入hcc以退出
+	ls -l >> a
+	ls -l > a
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{和时间相关的命令}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 符号
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	sleep @秒数@		# 停止工作一些时间
+	time @命令@		# 记时器
+	date @　　@		# 显示时间
+	\end{lstlisting}
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	sleep 1
+	sleep @\color{Pink}1m@
+	time time time
+	time ls
+	date
+	date --help
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{符号}
+	\begin{itemize}
+	\item 符号
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	/ @或@ // @　　@	 # 根目录
+	.			  # 当前目录
+	..			  # 父目录
+	~			  # 家目录（波浪线，键盘上1左侧）
+	* @和@ ? @　　@	 # 通配符
+	@\color{Blue}\#@			 # 注释
+	@命令@ ; @命令@ @　　@# 依次执行命令
+	\end{lstlisting}
+	\item 尝试
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	ls / ; ls //
+	ls /@\color{Pink}s*@		# s开头
+	ls /@\color{Pink}s??@	   # s后面跟随两个字母
+	ls .
+	cd ..
+	cd ~
+	sleep 1 ; echo hcc
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{更高级的符号}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 符号
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	\ @　　　　@		  # 命令换行
+	@命令1@ && @命令2@	# 如果1正确则执行2
+	@命令1@ || @命令2@	# 如果1错误则执行2
+	\end{lstlisting}
+	\item 参见《\href{http://cn.linux.vbird.org/linux\_basic/0320bash\_5.php}
+					{鸟哥的Linux私房菜}》
+		\begin{itemize}
+		\item 以及在\href{http://cn.linux.vbird.org/linux\_basic/0320bash\_2.php}
+						{这个页面}中查找``跳脱符号''
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Linux的目录}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 常见根挂载点上的目录
+		（参见\href{https://en.wikipedia.org/wiki/Unix\_filesystem}{维基百科}）
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl,
+						escapebegin=\obeyspaces]
+	/bin	# binary    二进制文件（如ls）
+	/dev	# device    设备文件
+	/etc	# et cetera 设置和数据
+	/home	# home      用户主目录
+	/tmp	# temporary 临时目录
+	/srv	# server    服务器数据
+	/usr	# user      非关键数据和文件
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{常用文件}
+	\small
+	\begin{itemize}
+	\item \inlineBash{/dev}
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl, escapechar=@]
+		null			# 黑洞（吞没数据）
+		zero			# 白洞（输出\textquotesingle{\textbackslash}0\textquotesingle）
+		random			# 输出随机字符（更随机）
+		urandom			# 输出随机字符（更快）
+		sda				# 磁盘（sdb, sdc, ...）
+		sda1			# 磁盘sda的分区1（sda2, ...）
+		sr0				# 光盘
+		\end{lstlisting}
+	\item \inlineBash{/etc}
+		\begin{lstlisting}[style=bashstyle, gobble=8, texcl, escapechar=@]
+		passwd			# 用户登录方式
+		shadow			# 用户密码
+		hosts			# 修改DNS
+		fstab			# 挂载点配置
+		sudoers			# 配置管理员
+		locale.conf		# 配置语言
+		resolv.conf		# DNS服务器地址
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{设备和挂载点}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			挂载点和对应的设备
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl, escapechar=@]
+			/			/dev/sda1
+			/home		/dev/sda2
+			/mnt/USB	/dev/sdb1
+			/opt		/dev/sda3
+			/srv		/dev/sda4
+			/tmp		tmpfs
+			\end{lstlisting}
+			用\inlineBash{df}可以查看实际的挂载情况
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			Windows下
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl, escapechar=@]
+			@\color{Pink}C:@		@某个物理磁盘@
+			@\color{Pink}D:@		@某个物理磁盘@
+			@\color{Pink}E:@		@某个U盘@
+			@\color{Pink}F:@		@某个U盘@
+			@\color{Pink}G:@		@某个移动硬盘@
+			\end{lstlisting}
+			如何分清哪个设备对应哪个标卷？
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{回顾}
+	\linespread{1.5}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 查看进程信息
+			\item 查看网络连接
+			\item 将数据输出到文件
+			\item 依次执行两个命令
+			\item 访问父目录
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{lstlisting}[style=bashstyle, gobble=12, texcl, escapechar=@]
+			*		?		/	//
+			~		;		<	<<
+			.		..		>	>>
+			uname	top		ps -aux
+			sleep	time	date
+			sync	lspci
+			free	ifconfig	
+			\end{lstlisting}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

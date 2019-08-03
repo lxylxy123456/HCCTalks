@@ -55,7 +55,7 @@
 	\item 回忆：\inlinePython{qrcode}用来生成二维码
 		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
 		import qrcode
-		qrcode.run_example('@\color[HTML]{ff0bff}内容字符串@')
+		qrcode.run_example('@\color{Pink}内容字符串@')
 		\end{lstlisting}
 	\item 需要额外安装软件包：\texttt{pip3 install qrcode}
 	\item 任务：生成十一圈活动二维码
@@ -77,7 +77,7 @@
 		\end{lstlisting}
 	\item 取出数据
 		\begin{lstlisting}[style=pythonstyle, gobble=8, texcl, escapechar=@]
-		'@\color[HTML]{ff0bff}字符串@'.split()	# 用 [] 选择需要的部分
+		'@\color{Pink}字符串@'.split()	# 用 [] 选择需要的部分
 		\end{lstlisting}
 	\item 任务
 		\begin{enumerate}
@@ -105,10 +105,10 @@
 		\item 需要额外安装软件包：\texttt{pip3 install pillow}
 		\end{itemize}
 	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl, escapechar=@]
-	a = Image.open('@\color[HTML]{ff0bff}文件名@')		# 打开图像
+	a = Image.open('@\color{Pink}文件名@')		# 打开图像
 	a.show()					 # 预览
 	b = a.crop((@左@, @上@, @右@, @下@))  # 裁剪
-	b.save('@\color[HTML]{ff0bff}文件名@')				# 保存
+	b.save('@\color{Pink}文件名@')				# 保存
 	\end{lstlisting}
 	\end{itemize}
 	\begin{columns}[T]
@@ -166,16 +166,16 @@
 \begin{frame} [fragile]
 	\frametitle{从每一行中取得信息}
 	\begin{itemize}
-	\item 以{\color{blue}蓝色}字符为参照，截取{\color[HTML]{ff0bff}粉色}的内容信息
+	\item 以{\color{blue}蓝色}字符为参照，截取{\color{Pink}粉色}的内容信息
 	\item 善用 \inlinePython{split}
 	\end{itemize}
 	\begin{lstlisting}[basicstyle=\ttfamily, gobble=4, texcl, escapechar=@]
 	<tr>
 	<th scope="row" class="hidden-xs"><h5>4</h5></th>
-	<td>@\color{blue}<h5>\color[HTML]{ff0bff}月亮.MOV\color{blue}</h5>@</td>
+	<td>@\color{blue}<h5>\color{Pink}月亮.MOV\color{blue}</h5>@</td>
 	<td class="xs"><h5>459.6 MiB</h5></td>
 	<td class="xs"><h5>2</h5></td>
-	<td>@\color{blue}<a href="\color[HTML]{ff0bff}/f/20151002moon/\color{blue}"@ class="b">
+	<td>@\color{blue}<a href="\color{Pink}/f/20151002moon/\color{blue}"@ class="b">
 	<span class="glyphicon"></span> Save</a>
 	</td>
 	</tr>
