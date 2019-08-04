@@ -1,15 +1,16 @@
 # HCC Talks
-* Note: currently all talks are in Chinese
-* All talks are to be written in LaTeX beamer
+* Note: currently all talks are in Chinese. 
+* All talks are to be written in LaTeX beamer. 
 * Old talk files (written in LibreOffice Impress) are in
-	[odp](https://github.com/lxylxy123456/HCCTalks/tree/odp) branch
+	[odp](https://github.com/lxylxy123456/HCCTalks/tree/odp) branch. 
 
 ## Make
-* Run `make ALL` to generate all pdf files to `/tmp/` directory
-	* To change output directory, use `TMP=/new/output/dir`
-* Run `make clean_tmp` to remove all temporary files
-* Run `make clean` to remove all generated files
-* To generate 16:9 version, remove comment on second line of `LatexConfig.tex`
+* Run `make ALL` to generate all pdf files to `/tmp/` directory. 
+	* To change output directory, use `TMP=/new/output/dir`. 
+* Run `make clean_tmp` to remove all temporary files. 
+* Run `make clean` to remove all generated files. 
+* All generated files, though may not up-to-date, are in 
+	[make](https://github.com/lxylxy123456/HCCTalks/tree/make) branch
 
 ## 已移植到beamer的幻灯片
 

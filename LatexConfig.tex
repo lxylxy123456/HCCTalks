@@ -1,6 +1,7 @@
-\documentclass
-% [aspectratio=169]
-{beamer}
+\ifx \aspectratio \undefined
+	\def \aspectratio{43}	% also: 169
+\fi
+\documentclass[aspectratio=\aspectratio]{beamer}
 
 \usepackage{CJKutf8}
 \usepackage{listings}
