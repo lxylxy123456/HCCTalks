@@ -1,0 +1,806 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta http-equiv="Content-Language" content="en-ca" />
+<style>
+
+body { 
+  font-family: Verdana,Geneva,Arial,Helvetic,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+table { 
+  border-width: 1px;
+  /*border-spacing: ;*/
+  border-style: solid;
+  border-color: #000080;
+  border-collapse: collapse;
+  font-family: Verdana,Geneva,Arial,Helvetic,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.tablehdr {
+  font-family: Verdana,Geneva,Arial,Helvetic,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 16px;
+  color: #FFFFFF;
+  background-color: #000080;
+}
+
+tt {
+  font-family: "Courier New",Courier,"Lucida Console",monospaced;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+u {
+  font-family: "Courier New",Courier,"Lucida Console",monospaced;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 14px;
+
+}
+
+.regexaccept {
+  font-family: "Courier New",Courier,"Lucida Console",monospaced;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 14px;
+  color:#008000;
+}
+
+.regexfail {
+  font-family: "Courier New",Courier,"Lucida Console",monospaced;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 14px;
+  color:#800000;
+}
+
+input
+{
+  font-family: "Courier New",Courier,"Lucida Console",monospaced;
+  font-weight: bold;
+  font-size: 16px;
+  color:#000080;
+}
+
+textarea {
+  font-family: "Courier New",Courier,"Lucida Console",monospaced;
+  font-weight: normal;
+  font-size: 14px;
+  color:#000080;
+}
+
+A:link    { color:#000080; text-decoration:none }
+A:visited { color:#000080; text-decoration:none }
+A:active  { color:#000080; text-decoration:none }
+A:hover   { color:#0080FF; text-decoration:none }
+
+h1 { 
+  font-family: Verdana,Geneva,Arial,Helvetic,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 22px;
+  margin-top: 2px;
+  margin-bottom: 6px;
+}
+
+h2 { 
+  font-family: Verdana,Geneva,Arial,Helvetic,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+h5 { 
+  font-family: Verdana,Geneva,Arial,Helvetic,sans-serif;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+</style>
+
+<title>Regular Expressions</title>
+
+<script type="text/javascript">
+
+var iBoxCounter = 0;
+
+var EMPTYARRAY = new Array();
+var NOHEADER = "";
+var MATCHFULLTEXT = true;
+var MATCHPARTIALTEXT = false;
+var MATCHLENDEFAULT = 3;
+
+
+function InsertRegExBox(sHeader,sRegExInit,bMatchFullText,sMatchInit,iMatchLen,aArrayAccept,sArrayAcceptID,aArrayReject,sArrayRejectID) {
+
+  var sBaseForm = '';
+
+  iBoxCounter++;
+  
+  if (iMatchLen > 0) {bDoMatch = true;} else {bDoMatch = false;}
+  if (sArrayAcceptID == "EMPTYARRAY") {bDoAccept = false;} else {bDoAccept = true;}
+  if (sArrayRejectID == "EMPTYARRAY") {bDoReject = false;} else {bDoReject = true;}
+  
+  var sArguments = ""
+  
+  sArguments += "'sRegEx" + iBoxCounter + "',";
+  sArguments += bMatchFullText + ",";
+  sArguments += bDoMatch + ",";
+  sArguments += "'sMatch" + iBoxCounter + "',";
+  sArguments += "'txtOutput" + iBoxCounter + "',";
+  sArguments += bDoAccept + ",";
+  sArguments += sArrayAcceptID + ",";
+  sArguments += "'outSuccess" + iBoxCounter + "',";
+  sArguments += bDoReject + ",";
+  sArguments += sArrayRejectID + ",";
+  sArguments += "'outFail" + iBoxCounter + "'";
+  
+  sBaseForm += '<form id="frmMain' + iBoxCounter + '" name="frmMain' + iBoxCounter + '" method=POST action="javascript:void(0)">';
+  sBaseForm += '<table id="tblMain' + iBoxCounter + '">';
+  
+  sBaseForm += '<tr class="tablehdr"><td>' + sHeader + '</td></tr>';
+  
+  sBaseForm += '<tr><td><input type="TEXT" id = "sRegEx' + iBoxCounter + '" name="sRegEx' + iBoxCounter + '" value="' + sRegExInit + '" size="80" onkeyup="UpdateRegExBox(' + sArguments + ')" onchange="UpdateRegExBox(' + sArguments + ')"></td></tr>';
+  /*sBaseForm += '<tr><td><input type="SUBMIT" name="butSuite' + iBoxCounter + '" value="CHECK" onclick="UpdateRegExBox(' + sArguments + ');"></td></tr>';*/
+  if (bDoMatch) {
+    sBaseForm += '<tr class="tablehdr"><td>Test Strings:</td></tr>';
+    sBaseForm += '<tr><td><textarea id = "sMatch' + iBoxCounter + '" name="sMatch' + iBoxCounter + '" cols="100" rows="' + iMatchLen + '" onkeyup="UpdateRegExBox(' + sArguments + ')" onchange="UpdateRegExBox(' + sArguments + ')">' + sMatchInit + '</textarea></td></tr>';
+    sBaseForm += '<tr><td id="txtOutput' + iBoxCounter + '" name="txtOutput' + iBoxCounter + '">&nbsp;</td></tr>';
+  }
+  if (bDoAccept) {
+    sBaseForm += '<tr class="tablehdr"><td>Test Suite: (Should be ACCEPTED)</td></tr>';
+    sBaseForm += '<tr><td id="outSuccess' + iBoxCounter + '" name="outSuccess' + iBoxCounter + '">&nbsp;</td></tr>';
+  }
+  if (bDoReject) {
+    sBaseForm += '<tr class="tablehdr"><td >Test Suite: (Should be REJECTED):</td></tr>';
+    sBaseForm += '<tr><td id="outFail' + iBoxCounter + '" name="outFail' + iBoxCounter + '">&nbsp;</td></tr>';
+  }
+  
+  sBaseForm += '</table>';
+  
+  sBaseForm += '</form>';
+ 
+  window.document.write(sBaseForm);
+  
+  UpdateRegExBox('sRegEx' + iBoxCounter,true,bDoMatch,'sMatch' + iBoxCounter,'txtOutput' + iBoxCounter,bDoAccept,aArrayAccept,'outSuccess' + iBoxCounter,bDoReject,aArrayReject,'outFail' + iBoxCounter);
+}
+
+function UpdateRegExBox(sRegExID, bMatchFullText, bDoMatch, sMatchID, sOutputID, bDoAccept, aAccept, sAcceptOut, bDoReject, aReject, sRejectOut) {
+
+  var aMatchIn = window.document.getElementById(sMatchID).value.split(/\r?\n/);
+  
+  if (bDoMatch) {
+    UpdateRegExArray(sRegExID,bMatchFullText,aMatchIn,sOutputID);
+  }
+  
+  if (bDoAccept) {
+    UpdateRegExArray(sRegExID,bMatchFullText,aAccept,sAcceptOut);
+  }  
+  
+  if (bDoReject) {
+    UpdateRegExArray(sRegExID,bMatchFullText,aReject,sRejectOut);
+  }  
+  
+}
+
+function UpdateRegExArray(sRegExID,bMatchFullText,aMatchIn,sOutputID) {
+
+  var i = 0;
+  var sBig = "";
+  
+  var sRegEx = window.document.getElementById(sRegExID).value;
+  
+  if (bMatchFullText) {
+    sRegEx = "^(" + sRegEx + ")$";
+  }
+
+  var regMatch;
+  try {
+      regMatch = new RegExp(sRegEx);
+  }
+  catch (err) {
+      regMatch = null;
+  }
+  
+  for (i=0;i<aMatchIn.length;i++) {
+    if (aMatchIn[i] != "") {
+      if (regMatch != null && aMatchIn[i].match(regMatch)) {
+        sBig = sBig + '<span class="regexaccept">ACCEPT:   ' + aMatchIn[i] + '</span><br>';
+      } else if (regMatch == null) {
+        sBig = sBig + '<span class="regexfail">ERROR:   ' + aMatchIn[i] + '</span><br>';
+      } else {
+        sBig = sBig + '<span class="regexfail">REJECT:   ' + aMatchIn[i] + '</span><br>';
+      }  
+    }
+  }
+  window.document.getElementById(sOutputID).innerHTML = sBig;
+}
+/*
+1. [01]+
+2. [01]*0
+3. ([01][01])+
+4. [01]*((0011)|(1111))[01]*
+5. [01]*(1010[01]*1001|1001[01]*1010|101001|1001010)[01]*
+6. 略
+7. 十六进制
+8. 电话，可以加上区号
+9. well[\-\ ]?respected CEO
+10. [\w]+(\s\w+){2,3}.?
+11. rabbit(\s\w+){0,2} box
+12. ([01][0-9]|2[1-3]):([0-5][0-9])
+13. [ATGC]*(ATG)([ATGC]{3})+(TAA|TAG|TGA)[ATGC]*
+14. ...
+15. 1*(01*01*)*1*
+16. 1?(01)*0?
+17. \$([1-9]\d{0,2}|0)((\d{3})*|(,\d{3})*)(\.\d{2})?
+18. .*(red(\s[\w\-]+){0,2} pick[\-\ ]?up truck|pick[\-\ ]?up truck(\s[\w\-]+){0,2} red).*\$([1-9]\d{0,2}|0)((\d{3})*|(,\d{3})*)(\.\d{2})?.*
+19. (0*1(01*0)*10*)*
+*/
+</script>
+
+</head>
+<body>
+
+<a style="float: right; " href="http://www.ugrad.cs.ubc.ca/~cs121/2016W1/Labs/Lab8/lab8.html">
+<img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a0/UBC_COA.svg/175px-UBC_COA.svg.png" />
+</a>
+
+<h2>Regular Expression Reference (Pre-Lab)</h2>
+<p>The following reference table has been provided for your convenience:</p>
+<table border="1" id="table1" cellspacing="0" cellpadding="3">
+	<tr class="tablehdr">
+		<td>Character(s)</td>
+		<td>Description</td>
+		<td>Example</td>
+	</tr>
+	<tr>
+		<td>
+		<tt>.</tt></td>
+		<td>Matches any character</td>
+		<td><tt>.at ={&quot;aat&quot;, &quot;bat&quot;, ...}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>[ ]</tt></td>
+		<td>Matches one character from those listed</td>
+		<td><tt>[cbr]at = {&quot;cat&quot;, &quot;bat&quot;, &quot;rat&quot;}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>[ - ]</tt></td>
+		<td>Matches one character from the range of characters listed</td>
+		<td><tt>[a-c]at = {&quot;aat&quot;, &quot;bat&quot;, &quot;cat&quot;}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>[^ ]</tt></td>
+		<td>Matches one character from those not listed</td>
+		<td><tt>[^b-d]at = {&quot;aat&quot;,&quot;eat&quot;, &quot;fat&quot;,...}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>|</tt></td>
+		<td>Matches one item from those separated by pipes |</td>
+		<td><tt>(ph|meerk|r)at = {&quot;phat&quot;,&quot;meerkat&quot;,&quot;rat&quot;}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>*</tt></td>
+		<td>Repeat the previous item 0 or many times</td>
+		<td><tt>ca*t = {&quot;ct&quot;, &quot;cat&quot;, &quot;caat&quot;, ...}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>+</tt></td>
+		<td>Repeat the previous item 1 or many times</td>
+		<td><tt>ca+t = {&quot;cat&quot;, &quot;caat&quot;, ...}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>?</tt></td>
+		<td>Repeat the previous item 0 or 1 time</td>
+		<td><tt>ca?t = {&quot;ct&quot;,&quot;cat&quot;}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>{#}</tt></td>
+		<td>Repeat the previous item an exact number of times</td>
+		<td><tt>ca{3}t = {&quot;caaat&quot;}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>{#,}</tt></td>
+		<td>Repeat the previous item a min. number of times</td>
+		<td><tt>ca{2,}t = {&quot;caat&quot;,&quot;caaat&quot;,...}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>{0,#}</tt></td>
+		<td>Repeat the previous item a max. number of times</td>
+		<td><tt>ca{,3}t = {&quot;ct&quot;,&quot;cat&quot;,&quot;caat&quot;,&quot;caaat&quot;}</tt></td>
+	</tr>
+	<tr>
+		<td>
+		<tt>{#,#}</tt></td>
+		<td>Repeat the previous item between a min. and max. number of times</td>
+		<td><tt>ca{1,3}t = {&quot;cat&quot;,&quot;caat&quot;,&quot;caaat&quot;}</tt></td>
+	</tr>
+	</table>
+<p>In addition, there are a few special character codes that come in handy:</p>
+<table border="1" id="table2" cellspacing="0" cellpadding="3">
+	<tr class="tablehdr">
+		<td>Symbol</td>
+		<td>Description</td>
+	</tr>
+	<tr>
+		<td>
+		<tt>\d</tt></td>
+		<td>Equivalent to <tt>[0-9]</tt>: Matches any digit</td>
+	</tr>
+	<tr>
+		<td>
+		<tt>\D</tt></td>
+		<td>Equivalent to <tt>[^0-9]</tt>:&nbsp; Matches any non-digit</td>
+	</tr>
+	<tr>
+		<td>
+		<tt>\s</tt></td>
+		<td>Matches white space character</td>
+	</tr>
+	<tr>
+		<td>
+		<tt>\S</tt></td>
+		<td>Matches a non-white space character</td>
+	</tr>
+	<tr>
+		<td>
+		<tt>\w</tt></td>
+		<td>Equivalent to <tt>[a-zA-Z0-9_]</tt>: Matches a &quot;word&quot; character</td>
+	</tr>
+	<tr>
+		<td>
+		<tt>\W</tt></td>
+		<td>Equivalent to <tt>[^a-zA-Z0-9_]</tt>: Matches a non-word character</td>
+	</tr>
+	</table>
+<p>&nbsp;</p>
+<h2>Exercises</h2>
+<p><b>Exercise 1: </b>Develop a regular expression for any binary string.</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessBS1 = new Array('0','1','00','10','111010101010111');
+  var aMatchFailBS1 = new Array('cat','123','he110, w0r1d','011023','201','f10');
+
+  InsertRegExBox(
+    'Exercise 1',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessBS1,
+    'aMatchSuccessBS1',
+    aMatchFailBS1,
+    'aMatchFailBS1'
+  );
+</script>
+
+<p><b>Exercise 2: </b>Develop a regular expression for any binary string that represents an unsigned integer that is EVEN:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessBS3 = new Array('0','10','1110','010','00011000110110');
+  var aMatchFailBS3 = new Array('1','011','0101','0001101','10210','cat','123456');
+
+  InsertRegExBox(
+    'Exercise 2',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessBS3,
+    'aMatchSuccessBS3',
+    aMatchFailBS3,
+    'aMatchFailBS3'
+  );
+</script>
+
+<p><b>Exercise 3: </b>Develop a regular expression for any binary string of EVEN length:
+<i>(Hint: remember the (cat)+ example?)</i></p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessBS2 = new Array('00','01','1010','0001','0001101100011011');
+  var aMatchFailBS2 = new Array('0','1','111','010','0001101','101030','cat','123456');
+
+  InsertRegExBox(
+    'Exercise 3',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessBS2,
+    'aMatchSuccessBS2',
+    aMatchFailBS2,
+    'aMatchFailBS2'
+  );
+</script>
+
+
+<p><b>Exercise 4: </b>Develop a regular expression for any binary string that
+contains the pattern 0011 OR the pattern 1111:</p>
+<script type="text/javascript">
+
+  var aMatchSuccessBS4 = new Array('0011','1111','0011110000','1111000', '0011111', '11110011');
+  var aMatchFailBS4 = new Array('0','1','0101','1010','11000100010','cat','123456', '50110', '10019');
+
+  InsertRegExBox(
+    'Exercise 4',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessBS4,
+    'aMatchSuccessBS4',
+    aMatchFailBS4,
+    'aMatchFailBS4'
+  );
+</script>
+
+<p><b>Exercise 5: </b>Develop a regular expression for any binary string that
+contains the pattern 1010 AND the pattern 1001: <i>(Hint: There are 4 cases, not
+2)</i></p>
+<script type="text/javascript">
+
+  var aMatchSuccessBS5 = new Array('010101001','000110010101000', '101001', '11111100101000','00010101001');
+  var aMatchFailBS5 = new Array('0','1','0110','1001','01101','10010','1100010001110','cat','123456', '3011001', '1001107');
+
+  InsertRegExBox(
+    'Exercise 5',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessBS5,
+    'aMatchSuccessBS5',
+    aMatchFailBS5,
+    'aMatchFailBS5'
+  );
+</script>
+
+<p><b>Exercise 6: </b>Explain in plain English what types of strings the regular expression <tt>[A-Z][0-9][A-Z]\s[0-9][A-Z][0-9]</tt> represents, and give some test strings:</p>
+<script type="text/javascript">
+
+  InsertRegExBox(
+    'Exercise 6',
+    '[A-Z][0-9][A-Z]\\s[0-9][A-Z][0-9]',
+    MATCHFULLTEXT,
+    '',
+    8,
+    EMPTYARRAY,'EMPTYARRAY',EMPTYARRAY,'EMPTYARRAY'
+  );
+</script>
+
+<p><b>Exercise 7: </b>Explain in plain English what types of strings the regular expression <tt>([0-9]|[A-F])+</tt> represents, and give some test strings:</p>
+<script type="text/javascript">
+
+  InsertRegExBox(
+    'Exercise 7',
+    '([0-9]|[A-F])+',
+    MATCHFULLTEXT,
+    '',
+    8,
+    EMPTYARRAY,'EMPTYARRAY',EMPTYARRAY,'EMPTYARRAY'
+  );
+</script>
+
+<p><b>Exercise 8: </b>Explain in plain English what types of strings the regular expression <tt>(\(\d\d\d\)\s)?\d\d\d-\d\d\d\d</tt> represents, and give some test strings:</p>
+<script type="text/javascript">
+
+  InsertRegExBox(
+    'Exercise 8',
+    '(\\(\\d\\d\\d\\)\\s)?\\d\\d\\d-\\d\\d\\d\\d',
+    MATCHFULLTEXT,
+    '',
+    8,
+    EMPTYARRAY,'EMPTYARRAY',EMPTYARRAY,'EMPTYARRAY'
+  );
+</script>
+
+<p><b>Exercise 9: </b>Develop a regular expression that will accept the following three strings: <tt>{"wellrespected CEO", "well respected CEO", "well-respected CEO"}</tt>:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessPRETRUCK = new Array('wellrespected CEO','well respected CEO','well-respected CEO');
+  var aMatchFailPRETRUCK = new Array('wellrespectedaward','well.respected CEO','well- respected CEO','well -respected CEO','boss', 'well-loved CEO', 'well respected ceo', 'highly-respected CEO');
+
+  InsertRegExBox(
+    'Exercise 9',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessPRETRUCK,
+    'aMatchSuccessPRETRUCK',
+    aMatchFailPRETRUCK,
+    'aMatchFailPRETRUCK'
+  );
+
+</script>
+
+
+<p><b>Exercise 10: </b>Develop a regular expression that will accept strings consisting of three or four words only
+ (a word is a collection of "word" characters separated by a space, the start of the expression, or the end of the expression).
+ There may or may not be punctuation at the end of the string:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccess3OR4 = new Array('one two three','one two three four','1 2 3 4','how many words?');
+  var aMatchFail3OR4 = new Array('  word word', 'word','word word','word word word word word','word! word word');
+
+  InsertRegExBox(
+    'Exercise 10',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccess3OR4,
+    'aMatchSuccess3OR4',
+    aMatchFail3OR4,
+    'aMatchFail3OR4'
+  );
+
+</script>
+
+
+<p><b>Exercise 11: </b>Develop a regular expression that will accept the word
+rabbit and the word box with at most 2 other words between them:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessCATHAT = new Array('rabbit box','rabbit in box','rabbit in the box');
+  var aMatchFailCATHAT = new Array('box rabbit','rabbitbox','rabbitinthebox','rabbit in the big box','rabbit in the super big box');
+
+  InsertRegExBox(
+    'Exercise 11',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessCATHAT,
+    'aMatchSuccessCATHAT',
+    aMatchFailCATHAT,
+    'aMatchFailCATHAT'
+  );
+
+</script>
+
+
+
+<p><b>Exercise 12: </b>Develop a regular expression that will accept a 24-hour time <tt>(00:00 ... 23:59)</tt>:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessTIME = new Array('12:34','00:00','23:59','09:00','10:00','11:11','15:15');
+  var aMatchFailTIME = new Array('24:00','12:32 pm','0:60','9:99','4','-4:00','03:99');
+
+// '((1?[0-9])|(2[0-3])):[0-5][0-9]'
+
+  InsertRegExBox(
+    'Exercise 12',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessTIME,
+    'aMatchSuccessTIME',
+    aMatchFailTIME,
+    'aMatchFailTIME'
+  );
+
+</script>
+
+<p><b>Exercise 13: </b> Gene Identification</p>
+<p>DNA sequences are comprised of a simple 4-alphabet language with the symbols
+<tt>{A,C,G,T}</tt>. Three consecutive letters are known
+as a codon, so <tt>ACT</tt> and <tt>TCG</tt> are both codons.&nbsp; A Gene is a collection of
+at least three codons that starts with an <tt>ATG</tt> codon and ends with a <tt>TAA</tt>,
+<tt>TAG</tt>, or <tt>TGA</tt> codon. Any number of symbols can come before or after the start and end two codons.</p>
+<p>You need
+to develop a regular expression that will match any DNA sequence that contain a gene. </p>
+
+<script type="text/javascript">
+
+//  var aMatchSuccessGENE = new Array('ATGCCCTAA','ATGCCCTAG','ATGCCCTGA','ATGATGATGTAA','ATGAAAAACAAGAATTAA','ATGACAACCACGACTTAA','ATGAGAAGCAGGAGTTAA','ATGATAATCATGATTTAA','ATGCAACACCAGCATTAA','ATGCCACCCCCGCCTTAA','ATGCGACGCCGGCGTTAA','ATGCTACTCCTGCTTTAA','ATGGAAGACGAGGATTAA','ATGGCAGCCGCGGCTTAA','ATGGGAGGCGGGGGTTAA','ATGGTAGTCGTGGTTTAA','ATGTACTATTCATCCTCGTCTTGCTGGTGTTTATTCTTGTTTTAA');
+//  var aMatchFailGENE = new Array('GATTACA','ATGTAA','ATGTAG','ATGTGA','ATGTAATAG','ATGTAGTAA','ATGTGATAA','ATGCCCCTAG','ATGCCCCCTAG','CCCATGCCCCTAGCCC','CCCATGCCCCCTAGCCC');
+
+	var aMatchSuccessGENE = new Array('ATGCCCTAA','GCTAATGCCCTAA','ATGCCCTAG','ATGCCCTGA','ATGATGATGTAA','ATGAAAAACAAGAATTAA','ATGACAACCACGACTTAA','ATGAGAAGCAGGAGTTAA','ATGATAATCATGATTTAA','ATGCAACACCAGCATTAA','ATGCCACCCCCGCCTTAA','ATGCGACGCCGGCGTTAA','ATGCTACTCCTGCTTTAA','ATGGAAGACGAGGATTAA','ATGGCAGCCGCGGCTTAA','ATGGGAGGCGGGGGTTAA','ATGGTAGTCGTGGTTTAA','ATGTACTATTCATCCTCGTCTTGCTGGTGTTTATTCTTGTTTTAA', 'ATGCCCTAGCAC');
+	var aMatchFailGENE = new Array('GATTACA','ATGTAA','ATGTAG','ATGTGA','ATGCCCCTAG','ATGCCCCCTAG','CCCATGCCCCTAGCCC','CCCATGCCCCCTAGCCC','SQRGCTAATGCCCTAASKLJE','123asdATGAGAAGCAGGAGTTAA123asd');
+
+  InsertRegExBox(
+    'Exercise 13',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessGENE,
+    'aMatchSuccessGENE',
+    aMatchFailGENE,
+    'aMatchFailGENE'
+  );
+
+</script>
+
+<p><b>Exercise 14: </b> Testing Regular Expressions</p>
+<p>Your co-worker has been assigned the task of writing a regular expression that tests to see if an email address is valid: </p>
+<p>Identify 5 unique mistakes in the regular expression by creating test cases
+that are incorrectly rejected or accepted:</p>
+
+<script type="text/javascript">
+
+  InsertRegExBox(
+    'Exercise 14',
+    '[a-z]*@([a-z])+(\.[a-z]+)+',
+    MATCHFULLTEXT,
+    'davet@cs.ubc.ca',
+    7,
+    EMPTYARRAY,'EMPTYARRAY',EMPTYARRAY,'EMPTYARRAY'
+  );
+
+</script>
+
+<p><b>Exercise 15: </b> Develop a regular expression for a binary
+string that has an even number of 0s:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccess5B = new Array('1','','11','111','1111','100','001','010','1001','100001','1001001','1010','101101','111101110111','00','0000','000000','1111011111110111110111110111','1101110111100111101110111111');
+  var aMatchFail5B = new Array('0','000','00000','10','01','110','011','0001','1000','10001','101001','1010101','11111111110','01111111111','11110111111','cat','123456');
+
+  InsertRegExBox(
+    'Exercise 15',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccess5B,
+    'aMatchSuccess5B',
+    aMatchFail5B,
+    'aMatchFail5B'
+  );
+
+</script>
+
+<p><b>Exercise 16: </b> Develop a regular expression for a binary string that
+has no consecutive 0s and no consecutive 1s:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccess5C = new Array('1','0','10','01','101','010','1010','0101','10101','01010','101010','010101');
+  var aMatchFail5C = new Array('00','11','001','100','110','011','1001','0110','01010100101010','10101011010101','cat','123456');
+
+  InsertRegExBox(
+    'Exercise 16',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccess5C,
+    'aMatchSuccess5C',
+    aMatchFail5C,
+    'aMatchFail5C'
+  );
+
+</script>
+
+<p><b>Exercise 17: </b> Money Matters</p>
+
+<p>Develop a regular expression that will
+accept a dollar amount. For example, <tt>$3.56</tt> and <tt>$1,000,000</tt> are valid amounts,
+whereas <tt>$5.321</tt> and <tt>$5,29,40</tt> are not. </p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessPRICE = new Array('$0','$0.00','$0.99','$4','$4.00','$10','$10.00','$1000','$1000.00','$1,000','$1,000.00','$8,888,888,888,888.88','$88,888,888,888,888.88','$888,888,888,888,888.88','$1234567.89');
+  var aMatchFailPRICE = new Array('$-0','$ 0','$1.9','$.99','banana','$,333.33','$12,34','$22,333,22,333.22','$$$','$$$0','3$','$02', '$088,888,98', '$1,222333');
+
+  InsertRegExBox(
+    'Exercise 17',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessPRICE,
+    'aMatchSuccessPRICE',
+    aMatchFailPRICE,
+    'aMatchFailPRICE'
+  );
+
+</script>
+
+<h2>Challenge Exercises</h2>
+
+<p><b>Exercise 18:</b> Searching</p>
+<p>You are in the market to buy a red pick-up truck,
+and you wish to develop an automated web searching program (a spider) to search daily through various online
+newsgroups and classified ad websites to find text containing the word red and
+the phrase pick-up truck close to each other, followed by a price. Specifically,
+you should match the words red and the phrase (pickup/pick-up/pick up) truck
+separated by at most two other words or numbers (such as a year) in between. The pick-up truck phrase could
+appear before or after the word red. After the words red and the phrase pick-up
+truck, the text should also contain a price, and you should be able to simply
+re-use your price regular expression you developed previously.</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccessTRUCK = new Array('red pickup truck $5000','red pickup truck $5,000','red pickup truck $1,234.56','red pick-up truck $5000','red pick up truck $5000','red toyota pick-up truck $5000','red toyota 1993 pick-up truck $5000','blah blah red toyota 1993 pick-up truck blah blah $5000 blah','pickup truck red $5000','pick-up truck 1993 toyota red $5000','blah blah blah pick-up truck toyota 1993 red blah blah blah $5000','desperate: red 1993 toyota pickup truck for sale. $2,000 o.b.o.','toy pickup truck - cherry red: $12.','red red pickup pickup truck truck $5000.');
+  var aMatchFailTRUCK = new Array('red','truck','pickup truck','red pickup truck','red $5000','pickup truck $5000','red truck $5000','$5000 red pickup truck','blue pickup truck $5000','red car $5000','red toyota 1993 pick-up truck','red 1993 toyota automatic pick-up truck $5000','fred\'s pick-up truck sold for $5000','pick-up trucks by fred: $5000','reddy for sale pickup truck: $5000)');
+
+  InsertRegExBox(
+    'Exercise 18',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccessTRUCK,
+    'aMatchSuccessTRUCK',
+    aMatchFailTRUCK,
+    'aMatchFailTRUCK'
+  );
+
+</script>
+
+
+<p><b>Exercise 19:</b> Develop a regular expression for a binary string that represents an unsigned value that is divisible by 3:</p>
+
+<script type="text/javascript">
+
+  var aMatchSuccess18 = new Array('11','110','1001','1100','10101','11011','100001','111111','1110101','101010110','000111000101');
+  var aMatchFail18 = new Array('1','10','100','111','110001','1000100','10010010','10101100','11100101','11011101','110110111');
+
+  InsertRegExBox(
+    'Exercise 19',
+    '',
+    MATCHFULLTEXT,
+    '',
+    MATCHLENDEFAULT,
+    aMatchSuccess18,
+    'aMatchSuccess18',
+    aMatchFail18,
+    'aMatchFail18'
+  );
+
+</script>
+
+<br>
+<center><img src="http://imgs.xkcd.com/comics/regular_expressions.png">
+<br>
+<a href="http://xkcd.com/208/">From xkcd.</a>
+</center>
+
+</body>
+</html>
+
