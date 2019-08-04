@@ -1,27 +1,38 @@
-SOURCES = $(wildcard *Talk*.tex) \
+SOURCES = $(wildcard *Talk*.tex)
 
-TARGETS = $(SOURCES:%.tex=/tmp/%.pdf)
+TARGETS = $(SOURCES:%.tex=$(TMP)/%.pdf)
+
+HTML_SOURCES = $(wildcard *Talk*.html)
+
+HTML_TARGETS = $(HTML_SOURCES:%.html=$(TMP)/%.html)
+
+TMP = /tmp
 
 all:
 
-ALL: $(TARGETS)
+ALL: $(TARGETS) $(HTML_TARGETS)
 
-$(TARGETS): /tmp/%.pdf : %.tex LatexConfig.tex
-	pdflatex -shell-escape -output-directory /tmp $^
+$(TARGETS): $(TMP)/%.pdf : %.tex LatexConfig.tex
+	mkdir -p $(TMP)
+	pdflatex -shell-escape -output-directory $(TMP) $^
+
+$(HTML_TARGETS): $(TMP)/%.html : %.html
+	mkdir -p $(TMP)
+	cp $^ $@
 
 clean_tmp: 
 	rm -f \
-		$(TARGETS:/tmp/%.pdf=/tmp/%.aux) \
-		$(TARGETS:/tmp/%.pdf=/tmp/%.log) \
-		$(TARGETS:/tmp/%.pdf=/tmp/%.nav) \
-		$(TARGETS:/tmp/%.pdf=/tmp/%.out) \
-		$(TARGETS:/tmp/%.pdf=/tmp/%.snm) \
-		$(TARGETS:/tmp/%.pdf=/tmp/%.toc) \
-		$(TARGETS:/tmp/%.pdf=/tmp/%.vrb)
+		$(TARGETS:$(TMP)/%.pdf=$(TMP)/%.aux) \
+		$(TARGETS:$(TMP)/%.pdf=$(TMP)/%.log) \
+		$(TARGETS:$(TMP)/%.pdf=$(TMP)/%.nav) \
+		$(TARGETS:$(TMP)/%.pdf=$(TMP)/%.out) \
+		$(TARGETS:$(TMP)/%.pdf=$(TMP)/%.snm) \
+		$(TARGETS:$(TMP)/%.pdf=$(TMP)/%.toc) \
+		$(TARGETS:$(TMP)/%.pdf=$(TMP)/%.vrb)
 	rm -rf /tmp/TalkSvg/
 
 clean_pdf:
-	rm -f $(TARGETS)
+	rm -f $(TARGETS) $(HTML_TARGETS)
 
 clean: clean_tmp clean_pdf
 

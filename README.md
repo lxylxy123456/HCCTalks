@@ -1,15 +1,19 @@
 # HCC Talks
 * Note: currently all talks are in Chinese
 * All talks are to be written in LaTeX beamer
-* Old talk files (written in LibreOffice Impress) are in odp branch
+* Old talk files (written in LibreOffice Impress) are in
+	[odp](https://github.com/lxylxy123456/HCCTalks/tree/odp) branch
 
 ## Make
 * Run `make ALL` to generate all pdf files to `/tmp/` directory
+	* To change output directory, use `TMP=/new/output/dir`
 * Run `make clean_tmp` to remove all temporary files
 * Run `make clean` to remove all generated files
 * To generate 16:9 version, remove comment on second line of `LatexConfig.tex`
 
-## PythonTalk
+## 已移植到beamer的幻灯片
+
+### PythonTalk
 1.	基本类型 (int, float, bool)
 2.	复杂类型 (list, dict, tuple, str)
 3.	循环函数 (for, while)
@@ -21,38 +25,36 @@
 9.	函数式编程
 10.	多线程编程
 
-## BashTalk
+### BashTalk
 1.	目录操作 (ll, ls, pwd, cd; du, df, tree, find; cat, mkdir; rm, mv, cp)
 2.	文件操作 (grep; head, tail, cut; wc, md5sum, sha1sum;| ; more, less, nano, vi; hexdump; diff)
 3.	(uname, top, ps -aux, sync, ifconfig, lspci, free; <, >, <<, >>; sleep, time, date; /, //, *, ?, ., .., ~, ;, \\, &&, ||; linux目录; 常用文件; 设备和挂载点)
 4.	(su, sudo; history, .bash_history; rpm, dnf, yum; 7za; nano)
 
-## GitTalk
+### GitTalk
 1. 使用Git
 
-## AstronomyTalk
-* 尚未改写为beamer
-1.	天文学软件使用方法
-
-## RegularExpression
-* 尚未改写为beamer
+### RegExpTalk
 1.	正则表达式使用方法
 
-## IntroductionToComputerEngineering
-* 尚未改写为beamer
+## 尚未移植到beamer的幻灯片
+* 请参考[odp](https://github.com/lxylxy123456/HCCTalks/tree/odp)分支
+
+### AstronomyTalk
+1.	天文学软件使用方法
+
+### IntroductionToComputerEngineering
 1.	一些常用的开源软件介绍
 
-## DjangoTalk
-* 尚未改写为beamer
+### DjangoTalk
 0.	[prep] SQL + HTML
-1.	DjangoBook	1 ~ 3
-2.	DjangoBook	3 ~ 4
-3.	DjangoBook	4 ~ 4
-4.	DjangoBook	5 ~ 5
-5.	DjangoBook	12, 14
+1.	DjangoBook 1 ~ 3
+2.	DjangoBook 3 ~ 4
+3.	DjangoBook 4 ~ 4
+4.	DjangoBook 5 ~ 5
+5.	DjangoBook 12, 14
 
-## HTMLTalk
-* 尚未改写为beamer
+### HTMLTalk
 1.	HTMLTalk 1
 2.	HTMLTalk 2
 
