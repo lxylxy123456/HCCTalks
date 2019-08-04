@@ -1,0 +1,186 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Reg Exp Talk 1}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame} [fragile]
+	\frametitle{介绍}
+	\linespread{1.5}
+	　　正则表达式，又称正规表示式、正规表示法、正规运算式、规则运算式、常规表示法（英语：Regular Expression，在代码中常简写为regex、regexp或RE），是计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。在很多文本编辑器里，正则表达式通常被用来检索、替换那些符合某个模式的文本。
+	
+	　　来源：\href{https://zh.wikipedia.org/wiki/\%E6\%AD\%A3\%E5\%88\%99\%E8\%A1\%A8\%E8\%BE\%BE\%E5\%BC\%8F}{维基百科}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Python中的使用方法}
+	\linespread{1.5}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> import re
+	>>> re.findall('[0-9]', '1234')
+	['1', '2', '3', '4']
+	>>> help(re)	# 探索其他函数，如search, match
+	>>>
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Bash中的使用方法}
+	\linespread{1.5}
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
+	$ grep '[0-9]' << FOE	# grep命令，FOE表示结束
+	> 1234					# stdin输入内容
+	> HCC					 # 第二行
+	> py2exe				 # 第三行
+	> FOE					 # stdin结束
+	1234					# grep命令的输出
+	py2exe					 # 第二行
+	$
+	\end{lstlisting}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{Gedit中的使用方法}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 用\texttt{Ctrl-F}打开查找
+	\item 点击弹出框体左边的放大镜，选择``用正则表达式匹配''
+	\item 输入表达式
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{中括号}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 中括号内一般可以表示一些字符区间，匹配一个字符
+		\begin{itemize}
+		\item \inlineListing{[0-9a-zA\-]} 分别代表数字、小写字母、A和-
+		\end{itemize}
+	\item 例如
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> re.findall('[0-9A-Z]', '12abAB')
+	['1', '2', 'A', 'B']
+	>>> re.findall('[1-9a]', '12abAB')
+	['1', '2', 'a']
+	>>>
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{加号和点}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 加号代表将前一个规则匹配多次，点表示任何字符
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> re.findall('[1-9]+', '12ab45AB')
+	['12', '45']
+	>>> re.findall('.+', '1ab\na2\n43\n')
+	['1ab', 'a2', '43']
+	>>>
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{小括号}
+	\begin{itemize}
+	\item 小括号在\inlinePython{findall}时代表需要得到的结果
+		\begin{itemize}
+		\item 尝试：有多个小括号时会怎样？
+		\end{itemize}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> re.findall(r'http://[a-z\.]+/',
+	... 'http://shiyiquan.net/club/hcc/')
+	['http://shiyiquan.net/']
+	>>> re.findall(r'http://([a-z\.]+)/',
+	... 'http://shiyiquan.net/club/hcc/')
+	['shiyiquan.net']
+	>>>
+	\end{lstlisting}
+	\item 也可以指定加号运算的优先级
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> re.findall('((ab)+)', 'bababababa')
+	[('abababab', 'ab')]
+	>>> re.findall('(a(b)+)', 'babbbbbba')
+	[('abbbbbb', 'b')]
+	>>>
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{大括号}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 大括号定义重复次数
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> re.findall(r'[0-9]{3,4}', 
+	... 			'123a1234a12345')
+	['123', '1234', '1234']
+	>>> 
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlineBash{^} 和 \inlineBash{$}}
+	\linespread{1.5}
+	\begin{itemize}
+	\item \inlineBash{^}表示匹配字符串的开始，\inlineBash{$}表示匹配结束
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	>>> re.findall(r'^[0-9]', '123')
+	['1']
+	>>> re.findall(r'[0-9]$', '123')
+	['3']
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{实例 - urls.py}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 节选自 \href{https://github.com/lxylxy123456/shierquan/}
+			{\inlineListing{shierquan}} 项目的
+			\href{https://github.com/lxylxy123456/shierquan/blob/master/quan\_account/urls.py}
+			{\inlineListing{quan\_account/urls.py}}
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
+	urlpatterns = [
+		url(r'^signup/$', user_signup),
+		url(r'^login/$', user_login),
+		url(r'^club/([A-Za-z\-]+)/follow/$', follow),
+		url(r'^logout/$', user_logout),
+		url(r'^create/$', club_create),
+		url(r'^search/(user)/$', search),
+	]
+	\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{练习}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 打开附带的\href{https://github.com/lxylxy123456/HCCTalks/blob/master/RegExpTalk01.html}
+						{\inlineListing{RegExpTalk01.html}}，完成练习。
+	\item Exercise 19 提示：研究\href{https://zh.wikipedia.org/wiki/\%E7\%A1\%AE\%E5\%AE\%9A\%E6\%9C\%89\%E9\%99\%90\%E7\%8A\%B6\%E6\%80\%81\%E8\%87\%AA\%E5\%8A\%A8\%E6\%9C\%BA}
+	{确定有限状态自动机（DFA）}。编写题目要求的相应DFA，并将其转换为正则表达式。
+	\end{itemize}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+
