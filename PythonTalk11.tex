@@ -1,0 +1,288 @@
+\input{LatexConfig.tex}
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+\PreFirstFrame
+\begin{frame} [fragile]
+	\centerline{\fontsize{42}{42}\selectfont Python Talk 11}
+\end{frame}
+\PostFirstFrame
+
+\begin{frame}
+	\frametitle{调试程序}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 调试程序可以更清楚地看到程序的运算过程，远比单纯看代码方便理解
+	\item 常见的调试程序的方法有两种
+		\begin{itemize}
+		\item 在代码中加入 \inlinePython{print} 等语句来观察各个变量的值
+		\item （推荐）通过专业的调试器调试，例如
+				\inlinePython{gdb}、\inlinePython{pdb}
+		\end{itemize}
+	\item 使用情景
+		\begin{itemize}
+		\item 程序运算结果出错，但是不知道是中间哪一步导致的
+		\item 拿到别人的复杂程序需要理解，但是不知从何下手
+		\item 想更改程序运行时的一个中间变量，但不改代码
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{\inlinePython{pdb}}
+	\linespread{1.5}
+	\begin{itemize}
+	\item \inlinePython{pdb} 是 Python 的默认调试器，已经在 Python 中预装
+	\item \href{https://docs.python.org/3/library/pdb.html}{官方文档}有最详细的教程
+	\item 从程序内部调用
+		\begin{lstlisting} [style=pythonstyle, gobble=8]
+		>>> import pdb; pdb.set_trace()
+		\end{lstlisting}
+	\item 从命令行调用
+		\begin{lstlisting} [style=bashstyle, gobble=8]
+		$ python3 -m pdb 程序名.py
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{使用示例}
+	\begin{itemize}
+	\item 回想 Python Talk 4 中的一段错误程序
+		{\small
+		\begin{lstlisting}[style=pythonstyle, gobble=8, frame=single, 
+							numbers=left, numberstyle=\ttfamily]
+		a = 10
+		if a == 2 :
+			print(True)
+		elif a % 2 == 0 :
+			print(False)
+		else :
+			for i in range(3, a, 2) :
+				if a % i == 0 :
+					print(False)
+					break
+				print(True)
+		\end{lstlisting}
+		}
+	\item 此程序会判断 \inlinePython{a} 是否是质数，但是输出结果有问题
+	\item 将其保存为 \texttt{a.py} ，然后用命令行执行
+		\begin{lstlisting} [style=bashstyle, gobble=8]
+		$ python3 -m pdb a.py
+		\end{lstlisting}
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{代码步进}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			{\small
+			\begin{lstlisting} [style=bashstyle, gobble=12]
+			$ python3 -m pdb a.py
+			> a.py(1)<module>()
+			-> a = 10
+			(Pdb) n
+			> a.py(2)<module>()
+			-> if a == 2 :
+			(Pdb) n
+			> a.py(4)<module>()
+			-> elif a % 2 == 0 :
+			(Pdb) n
+			> a.py(5)<module>()
+			-> print(False)
+			(Pdb) n
+			False
+			--Return--
+			> a.py(5)<module>()->None
+			-> print(False)
+			(Pdb) quit
+			$ 
+			\end{lstlisting}
+			}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\linespread{1.5}
+			\begin{itemize}
+			\item 进入 \inlinePython{pdb} 后输入 \inlinePython{r}
+					可以直接执行程序（相当于没有使用调试器）
+			\item 输入 \inlinePython{n} 可以一行一行执行代码
+			\item 从左侧可以看出程序分别执行了第 1, 2, 4, 5 行
+			\item 通过这种方法我们可以看出程序走入了哪个分支
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{断点}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			{\small
+			\begin{lstlisting} [style=bashstyle, gobble=12]
+			$ python3 -m pdb a.py
+			> a.py(1)<module>()
+			-> a = 7
+			(Pdb) b 7
+			Breakpoint 1 at a.py:7
+			(Pdb) c
+			> a.py(7)<module>()
+			-> for i in range(3,a,2):
+			(Pdb) n
+			> a.py(8)<module>()
+			-> if a % i == 0 :
+			(Pdb) n
+			> a.py(11)<module>()
+			-> print(True)
+			(Pdb) ...
+			\end{lstlisting}
+			}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\linespread{1.5}
+			\begin{itemize}
+			\item 先将第一行改成 \inlinePython{a = 7}
+			\item 通过``\inlinePython{b 行号}''设置断点。程序在执行到断点时会暂停执行
+			\item 输入 \inlinePython{c} 从暂停执行恢复
+			\item 尝试在第7行设置断点，然后观察程序之后的执行过程
+			\item 你能找到改正程序的方法吗？
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{函数调用}
+	\linespread{1.25}
+	\begin{itemize}
+	\item 以下递归程序会打印一些中括号
+		{\small
+		\begin{lstlisting}[style=pythonstyle, gobble=8, frame=single, 
+							numbers=left, numberstyle=\ttfamily, texcl]
+		def f(x) :
+			if x == 0 :
+				return ''
+			s = f(x - 2) * 2
+			return '[' + s + ']'
+		print(f(4))		# 正确，结果是 [[][]]
+		print(f(3))		# 错误，应该是 [[][]]
+		\end{lstlisting}
+		}
+	\item 在执行 \inlinePython{f(3)} 时会出现无限递归的情况
+	\item 尝试通过 \inlinePython{pdb} 找出原因所在，通过以下命令
+	\end{itemize}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{更多 \inlinePython{pdb} 命令}
+	\linespread{1.25}
+	\begin{columns}[T]
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item \inlinePython{n}：执行一行，不跳入函数
+			\item \inlinePython{s}：执行一行，可跳入函数
+			\item \inlinePython{bt}：显示当前调用堆栈
+				\begin{itemize}
+				\item 越上面是越旧的调用
+				\item 一般来说导致错误的代码在最下面
+				\end{itemize}
+			\item \inlinePython{up}：调用堆栈向上
+			\item \inlinePython{down}：调用堆栈向下
+			\item \inlinePython{l}：当前执行的代码片段
+			\item \inlinePython{p 变量名}：打印变量的值
+			\end{itemize}
+		\end{column}
+		\begin{column}[T]{.5\textwidth}
+			\begin{itemize}
+			\item 尝试：在第6行设置断点，通过\inlinePython{s}观察程序每一步执行的行号
+			\item 每次递归调用时（第4行）用\inlinePython{p}打印\inlinePython{x}的值
+			\item 调用到 \inlinePython{x = 0} 时用 \inlinePython{bt} 和
+					\inlinePython{up} 查看当前的调用堆栈，并打印上面的调用的
+					\inlinePython{x} 的值
+				\begin{itemize}
+				\item 在迷路时用 \inlinePython{l} 看周围的代码
+				\end{itemize}
+			\end{itemize}
+		\end{column}
+	\end{columns}
+	\begin{comment}
+	b 6
+	r	# line 6
+	s	# line 1
+	s	# line 2
+	p x	# 			4
+	s	# line 4
+	s	# line 1
+	s	# line 2
+	p x	# 			2
+	s	# line 4
+	s	# line 1
+	s	# line 2
+	p x	# 			0
+	bt
+	up	# line 4, stack -2
+	p x	# 			2
+	up	# line 4, stack -3
+	p x	# 			6
+	up	# line 6, stack -4
+	l	# line 6
+	\end{comment}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{更改变量值}
+	\linespread{1.25}
+	\begin{itemize}
+	\item \texttt{!代码}：执行一行代码
+		\begin{itemize}
+		\item \inlinePython{!x = 4}：将 \inlinePython{x} 的值更改为 \inlinePython{4}
+		\item 提示： `\inlinePython{!}' 后面不可有空格
+		\end{itemize}
+	\item \texttt{b 行号, 条件}：设置有条件的代码
+		\begin{itemize}
+		\item \inlinePython{b 2, x == -1}：程序执行到第2行且 \inlinePython{x = -1} 时暂停执行
+		\end{itemize}
+	\item 尝试：运行 \texttt{b.py} 直到第2行且 \inlinePython{x = -3} ，此时将
+				\inlinePython{x} 改为 \inlinePython{0} ，然后继续运行（用 
+				\inlinePython{c} ）
+		\begin{itemize}
+		\item 结果应该是 \texttt{[[[][]][[][]]]}
+		\end{itemize}
+	\item 思考：如何更改 \texttt{b.py} 以使其正常运行？
+	\end{itemize}
+	\begin{comment}
+	b 2, x == -3
+	r
+	p x			# -3
+	!x = 0
+	c
+	\end{comment}
+\end{frame}
+
+\begin{frame} [fragile]
+	\frametitle{其他类似调试器的方法}
+	\linespread{1.5}
+	\begin{itemize}
+	\item 之前提到的 \inlinePython{set_trace} 可以在代码中进入调试模式
+		\begin{itemize}
+		\item \inlinePython{import pdb; pdb.set_trace()}
+		\item Python 调试模式中运算速度会变慢，因此这样可以提高效率
+		\end{itemize}
+	\item \inlinePython{code.interact} 可以从代码进入交互模式
+		\begin{itemize}
+		\item \inlinePython{import code; code.interact()}
+		\item \inlinePython{code.interact(local=locals())} 保留所有局部变量
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\PreLastFrame
+\begin{frame}
+	\centerline{\fontsize{32}{32}\selectfont 感谢参加此次活动}
+\end{frame}
+
+\newpage
+\end{CJK}
+\end{document}
+

@@ -25,6 +25,7 @@
 8.	实际应用 (生成二维码, 批量处理文本, 裁剪图片, 批量下载附件)
 9.	函数式编程
 10.	多线程编程
+11.	用pdb调试程序
 
 ### BashTalk
 1.	目录操作 (ll, ls, pwd, cd; du, df, tree, find; cat, mkdir; rm, mv, cp)
