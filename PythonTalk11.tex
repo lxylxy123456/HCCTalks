@@ -169,8 +169,10 @@
 		print(f(3))		# 错误，应该是 [[][]]
 		\end{lstlisting}
 		}
-	\item 在执行 \inlinePython{f(3)} 时会出现无限递归的情况
-	\item 尝试通过 \inlinePython{pdb} 找出原因所在，通过以下命令
+	\item 我们希望每次递归时 \inlinePython{x} 减少 \inlinePython{2} ，然后在
+		\inlinePython{0} 时停止
+	\item 但是在执行 \inlinePython{f(3)} 时会出现无限递归的情况
+	\item 尝试通过 \inlinePython{pdb} 找出原因所在，通过下一页的命令
 	\end{itemize}
 \end{frame}
 
@@ -239,7 +241,7 @@
 		\item \inlinePython{!x = 4}：将 \inlinePython{x} 的值更改为 \inlinePython{4}
 		\item 提示： `\inlinePython{!}' 后面不可有空格
 		\end{itemize}
-	\item \texttt{b 行号, 条件}：设置有条件的代码
+	\item \texttt{b 行号, 条件}：设置有条件的断点
 		\begin{itemize}
 		\item \inlinePython{b 2, x == -1}：程序执行到第2行且 \inlinePython{x = -1} 时暂停执行
 		\end{itemize}
