@@ -1,9 +1,8 @@
 \ifx \aspectratio \undefined
 	\def \aspectratio{43}	% also: 169
 \fi
-\documentclass[aspectratio=\aspectratio]{beamer}
+\documentclass[xetex,mathserif,serif,aspectratio=\aspectratio]{beamer}
 
-\usepackage{CJKutf8}
 \usepackage{listings}
 \usepackage{tikz}
 \usepackage{hyperref}
@@ -13,6 +12,13 @@
 \usepackage{courier}
 \usepackage{textcomp}
 \usepackage[inkscapepath=/tmp/TalkSvg/]{svg}
+\usepackage[cm-default]{fontspec}
+\usepackage{xeCJK}
+
+\setCJKmainfont{Source Han Sans CN}
+\setCJKmonofont{Source Han Sans CN}
+\setmainfont{DejaVu Sans}
+\setmonofont{Courier 10 Pitch}
 
 \hypersetup{colorlinks,linkcolor=,urlcolor=blue}
 
@@ -52,7 +58,7 @@
 			}
 			\put(\LenToUnit{0.05\paperwidth},\LenToUnit{0.05\paperheight}){
 				\footnotesize
-				This guidance is available under the
+				Available under
 				\href{https://creativecommons.org/licenses/by-sa/3.0/}
 				{Creative Commons Attribution-ShareAlike License}
 			}
@@ -119,8 +125,9 @@
 	alsoletter={0123456789.},
 	morekeywords=[4]{False,True,
 		0,1,2,3,4,5,6,7,8,9,10,11,12,13,15,17,19,16,20,24,27,31,32,33,34,35,38,
-		45,56,60,64,81,95,97,99,100,123,243,256,400,512,576,729,999,1024,1234,
-		1365,1366,2000,2187,2836,2957,3856,3857,5678,6561,9274,100000,1000000,
+		45,56,60,64,81,95,97,99,100,123,243,256,400,512,576,729,999,1000,1024,
+		1234,1365,1366,2000,2187,2836,2957,3856,3857,5678,6561,9274,100000,
+		1000000,
 		0.5,3.14,3.4,
 		0x1234,},
 	keywordstyle=[4]\color{Pink},

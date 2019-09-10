@@ -1,7 +1,6 @@
 \input{LatexConfig.tex}
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -157,10 +156,10 @@
 	\linespread{1.25}
 	\begin{itemize}
 	\item \inlineBash{wget}可以下载网页
-	\begin{lstlisting}[style=bashstyle, gobble=4, texcl]
-	wget 网址
-	wget 网址 -r		# 递归下载
-	wget 网址 -rl 3		# 深度为3
+	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
+	wget @网址@
+	wget @网址@ -r		# 递归下载
+	wget @网址@ -rl 3		# 深度为3
 	\end{lstlisting}
 	\item 尝试
 	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
@@ -202,6 +201,5 @@
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

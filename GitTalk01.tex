@@ -1,7 +1,13 @@
 \input{LatexConfig.tex}
 
+\usepackage{pmboxdraw}
+\usepackage{newunicodechar}
+\newunicodechar{└}{\textSFii}
+\newunicodechar{├}{\textSFviii}
+\newunicodechar{─}{\textSFx}
+\newunicodechar{│}{\textSFxi}
+
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -39,14 +45,14 @@
 	\item 例
 	\linespread{0}
 	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
-	shiyiquan			 # 项目目录
-	@├─@.git@　@			 # 隐藏目录
-	@│　├─@暂存区@　　@		# 临时存储
-	@│　└─@版本库@　　@		# 永久存储
-	@│　　　├─@98d22f3		  # 一个版本
-	@│　　　└─@118532c		  # 另一个版本
-	@├─@shiyiquan@　@		 # 工作区文件
-	@└─@README.md@　@		 # 可随意更改
+	shiyiquan			  # 项目目录
+	@├─@.git				 # 隐藏目录
+	@│@  @├─暂存区@			    # 临时存储
+	@│@  @└─版本库@			    # 永久存储
+	@│@    @├─@98d22f3		      # 一个版本
+	@│@    @└─@118532c		      # 另一个版本
+	@├─@shiyiquan			 # 工作区文件
+	@└─@README.md			 # 可随意更改
 	\end{lstlisting}
 	\linespread{1.5}
 	\end{itemize}
@@ -117,7 +123,7 @@
 	\begin{itemize}
 	\item 命令
 	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
-	git reset --hard 版本号
+	git reset --hard @版本号@
 	HEAD^		# 当前版本的前一个版本
 	HEAD~10		# 前10个版本
 	\end{lstlisting}
@@ -202,7 +208,7 @@
 	\begin{lstlisting}[style=bashstyle, gobble=4, texcl, escapechar=@]
 	git branch dev
 	echo "master ver" >> jkl
-	git commit -am "Master"	# -am相当于add后提交
+	git commit -am "Master"	# -am等于add后提交
 	git checkout dev		# jkl变了
 	echo "dev version" >> jkl
 	git commit -am "Dev"
@@ -217,11 +223,11 @@
 	\begin{itemize}
 	\item 冲突后git会提示冲突的文件，只要按照标记手动合并然后重新提交即可
 	\begin{lstlisting}[basicstyle=\ttfamily, gobble=4, texcl, escapechar=@]
-	@\color{Pink}<<<<<<< HEAD@			# 当前分支
+	@\color{Pink}<<<<<<< HEAD@			# @当前分支@
 	dev version
-	@\color{Pink}=======@				 # 分割线
+	@\color{Pink}=======@				 # @分割线@
 	master ver
-	@\color{Pink}>>>>>>> master@		  # 合并分支
+	@\color{Pink}>>>>>>> master@		  # @合并分支@
 	\end{lstlisting}
 	\end{itemize}
 \end{frame}
@@ -247,6 +253,5 @@
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

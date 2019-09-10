@@ -1,7 +1,6 @@
 \input{LatexConfig.tex}
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -104,10 +103,10 @@
 		\begin{column}[T]{.5\textwidth}
 			\begin{itemize}
 			\item 标准输入输出
-				\begin{lstlisting}[style=bashstyle, gobble=16, texcl]
-				stdin	标准输入
-				stdout	标准输出
-				stderr	标准错误
+				\begin{lstlisting}[style=bashstyle, gobble=16, escapechar=@]
+				stdin	@标准输入@
+				stdout	@标准输出@
+				stderr	@标准错误@
 				\end{lstlisting}
 			\item 文件也可用作输入输出
 			\end{itemize}
@@ -269,6 +268,5 @@
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

@@ -1,7 +1,6 @@
 \input{LatexConfig.tex}
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -79,6 +78,7 @@
 	\begin{columns}[T]
 		\begin{column}[T]{.5\textwidth}
 			{\small
+			\linespread{0.9}
 			\begin{lstlisting} [style=bashstyle, gobble=12]
 			$ python3 -m pdb a.py
 			> a.py(1)<module>()
@@ -275,6 +275,7 @@
 		\begin{itemize}
 		\item \inlinePython{import code; code.interact()}
 		\item \inlinePython{code.interact(local=locals())} 保留所有局部变量
+		\item \inlinePython|local={**locals(), **globals()}| 也保留全局变量
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -285,6 +286,5 @@
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

@@ -1,7 +1,6 @@
 \input{LatexConfig.tex}
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -23,9 +22,7 @@
 		\end{itemize}
 	\item 将字符串变为字节
 		\begin{itemize}
-		\item \begin{lstlisting}[style=pythonstyle, gobble=8, escapechar=@]
-		'@\color{Pink}十一圈@'
-		\end{lstlisting}
+		\item \inlinePython{'十一圈'}
 		\end{itemize}
 	\item 用以下格式输出当前时间
 		\begin{itemize}
@@ -218,6 +215,5 @@ def getpass() :
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

@@ -1,7 +1,6 @@
 \input{LatexConfig.tex}
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -40,13 +39,13 @@
 		\end{column}
 		\begin{column}[T]{.5\textwidth}
 			参数说明
-			\begin{lstlisting}[style=pythonstyle, gobble=12]
-			value	打印的数值
-			...		后面可以有很多位
-			sep		分割的字符
-			end		结尾的字符
-			file 	打印的文件
-			flush	是否直接输出
+			\begin{lstlisting}[style=pythonstyle, gobble=12, escapechar=@]
+			value	@打印的数值@
+			...		@后面可以有很多位@
+			sep		@分割的字符@
+			end		@结尾的字符@
+			file	@打印的文件@
+			flush	@是否直接输出@
 			\end{lstlisting}
 		\end{column}
 	\end{columns}
@@ -209,6 +208,5 @@
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

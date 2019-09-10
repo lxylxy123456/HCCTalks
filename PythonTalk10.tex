@@ -1,7 +1,6 @@
 \input{LatexConfig.tex}
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -214,7 +213,7 @@ if __name__ == '__main__' :
 	\item 条件变量需要和锁共同使用，当一个线程使用条件变量时必须已获得对应的锁
 	\begin{lstlisting} [style=pythonstyle, gobble=4, basicstyle=\ttfamily, texcl]
 	cv = threading.Condition(lock)
-	lock.acquire()		# 必须先获取lock才能使用cv
+	lock.acquire()		# 获取lock后才能使用cv
 	cv.wait()			# 等待一个事件的发生
 	cv.notify()			# 通知一个等待的线程
 	cv.notify_all()		# 通知所有等待的线程
@@ -279,6 +278,7 @@ if __name__ == '__main__' :
 
 \begin{frame} [fragile]
 	\frametitle{条件变量示例2}
+	\linespread{0.8}
 	\begin{itemize}
 	\item 让主线程等待所有线程退出
 	\begin{lstlisting} [style=pythonstyle, basicstyle=\footnotesize\ttfamily]
@@ -402,6 +402,5 @@ class ReadWriteLock :
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

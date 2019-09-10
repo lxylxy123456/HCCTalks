@@ -1,6 +1,7 @@
 # HCC Talks
 * Note: currently all talks are in Chinese. 
-* All talks are to be written in LaTeX beamer. 
+* All talks are to be written in XeLaTeX with beamer. 
+	* Required fonts: Source Han Sans CN, DejaVu Serif, Courier 10 Pitch
 * Old talk files (written in LibreOffice Impress) are in
 	[odp](https://github.com/lxylxy123456/HCCTalks/tree/odp) branch. 
 

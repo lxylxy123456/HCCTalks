@@ -1,7 +1,6 @@
 \input{LatexConfig.tex}
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \PreFirstFrame
 \begin{frame} [fragile]
@@ -103,8 +102,8 @@
 \begin{frame} [fragile]
 	\frametitle{\inlinePython{lambda}表达式}
 	\linespread{1.5}
-	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl]
-	lambda 参数列表: 函数返回值
+	\begin{lstlisting}[style=pythonstyle, gobble=4, texcl, escapechar=@]
+	lambda @参数列表@: @函数返回值@
 	pow = lambda x, y: x ** y
 	f = lambda x: x ** 2 + 3 * x + 1
 	\end{lstlisting}
@@ -459,6 +458,5 @@
 \end{frame}
 
 \newpage
-\end{CJK}
 \end{document}
 

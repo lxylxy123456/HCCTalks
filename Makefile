@@ -18,11 +18,11 @@ ALL: $(TARGETS_43) $(TARGETS_169) $(HTML_TARGETS_43) $(HTML_TARGETS_169)
 
 $(TARGETS_43): $(TMP)/43/%.pdf : %.tex LatexConfig.tex
 	mkdir -p $(TMP)/43/
-	pdflatex -shell-escape -output-directory $(TMP)/43 $^
+	xelatex -8bit -shell-escape -output-directory $(TMP)/43 $^
 
 $(TARGETS_169): $(TMP)/169/%.pdf : %.tex LatexConfig.tex
 	mkdir -p $(TMP)/169/
-	pdflatex -shell-escape -output-directory $(TMP)/169 \
+	xelatex -8bit -shell-escape -output-directory $(TMP)/169 \
 		"\def\aspectratio{169}\input" $^
 
 $(HTML_TARGETS_43): $(TMP)/43/%.html : %.html
