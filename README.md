@@ -10,7 +10,7 @@
 	* To change output directory, use `TMP=/new/output/dir`. 
 * Run `make clean_tmp` to remove all temporary files. 
 * Run `make clean` to remove all generated files. 
-* All generated files, though may not up-to-date, are in 
+* All generated files, though may not be up-to-date, are in 
 	[make](https://github.com/lxylxy123456/HCCTalks/tree/make) branch
 
 ## 已移植到beamer的幻灯片
