@@ -1,16 +1,25 @@
 \definecolor{_00ccff}{HTML}{00ccff}
+\def\center{(54.9655,-19.629)}
+\def\radius{7.924}
 \fill [color=_00ccff]
 	(55.371,-11.075) -- (57.286,-11.417) -- (55.693,-20.323) -- 
 	(53.803,-19.976);
 \begin{scope}
 	% (47.042,-11.705) rectangle (62.889,-27.553)
 	% (49.018,-13.682) rectangle (60.913,-25.576)
-	\clip
-		(59.4605,-11.563) -- (54.9665,-19.629) -- (53.3695,-11.511) -- 
-		(47.041,-11.511) -- (47.041,-27.553) -- (62.890,-27.553) -- 
-		(62.890,-11.511);
-	\fill [color=_00ccff, even odd rule]
-		  (54.9655,-19.629) circle [radius=5.9475]
-		  (59.4605,-11.563) -- (53.3695,-11.511) -- (54.9665,-19.629)
-		  (54.9655,-19.629) circle [radius=7.924]; 
+%	\clip
+%		(59.4605,-11.563) -- (54.9665,-19.629) -- (53.3695,-11.511) -- 
+%		(47.041,-11.511) -- (47.041,-27.553) -- (62.890,-27.553) -- 
+%		(62.890,-11.511);
+%	\fill [color=_00ccff, even odd rule]
+%		\center circle [radius=5.9475]
+%		(59.4605,-11.563) -- (53.3695,-11.511) -- (54.9665,-19.629)
+%		\center circle [radius=\radius]; 
+	% https://tex.stackexchange.com/questions/510281/tikz-fill-only-the-a-b-c
+	\path \center circle [radius=\radius];
+	\clip[overlay]
+		(53.3695,-11.511) -- (59.4605,-11.563) -- (54.9665,-19.629) [rev];
+	\clip[overlay, eo] \center circle [radius=5.9475, rev];
+	\fill[color=_00ccff] \center circle [radius=\radius];
 \end{scope}
+
