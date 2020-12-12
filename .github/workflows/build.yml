@@ -41,3 +41,62 @@ jobs:
           name: 16-9
           path: /tmp/169/*.pdf
 
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download 4:3
+        uses: actions/download-artifact@v2
+        with:
+          name: 4-3
+          path: 43/
+
+      - name: Download 16:9
+        uses: actions/download-artifact@v2
+        with:
+          name: 16-9
+          path: 169/
+
+      - name: Zip
+        run: |
+          zip -r 4-3.zip 43/
+          zip -r 16-9.zip 169/
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automatic release by GitHub Actions
+            SHA = {{ github.sha }}
+          draft: false
+          prerelease: false
+
+      - name: Release 4:3
+        id: upload-release-asset-4-3
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./4-3.zip
+          asset_name: 4-3.zip
+          asset_content_type: application/zip
+
+      - name: Release 16:9
+        id: upload-release-asset-16-9
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./16-9.zip
+          asset_name: 16-9.zip
+          asset_content_type: application/zip
+
