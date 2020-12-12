@@ -9,10 +9,29 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run a one-line script
+      - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y texlive-xetex
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex wget alien inkscape
+
+      - name: Install fonts
+        run: |
+          wget https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/32/Everything/aarch64/os/Packages/a/adobe-source-han-sans-cn-fonts-2.001-3.fc32.noarch.rpm
+          sudo alien -i adobe-source-han-sans-cn-fonts-2.001-3.fc32.noarch.rpm
+          sudo cp -r assets/courier/ /usr/share/fonts/courier/
 
       - name: Make all
         run: make ALL
+
+      - name: upload 4:3
+        uses: actions/upload-artifact@v2
+        with:
+          name: 4-3
+          path: /tmp/43/*.pdf
+
+      - name: upload 16:9
+        uses: actions/upload-artifact@v2
+        with:
+          name: 16-9
+          path: /tmp/169/*.pdf
+
