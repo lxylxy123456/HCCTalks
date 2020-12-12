@@ -64,11 +64,15 @@ jobs:
           zip -r 4-3.zip 43/
           zip -r 16-9.zip 169/
 
+      - name: Compute tag name
+        run: |
+          echo tag_name=${{ github.sha }} | cut -b 1-21 >> $GITHUB_ENV
+
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v5.1
         with:
-          custom_tag: ${{ github.sha }}
+          custom_tag: auto-release-${{ tag_name }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Release
@@ -77,8 +81,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.sha }}
-          release_name: Release ${{ github.sha }}
+          tag_name: auto-release-${{ tag_name }}
+          release_name: Auto Release ${{ tag_name }}
           body: |
             Automatically created by GitHub Actions
           draft: false
