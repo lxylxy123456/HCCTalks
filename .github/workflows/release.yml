@@ -1,11 +1,11 @@
 name: Release
 
-on:
-  workflow_run:
-    workflows: ["Generate PDF"]
-    branches: [master, release]
-    types: 
-      - completed
+on: [push, pull_request]
+#  workflow_run:
+#    workflows: ["Generate PDF"]
+#    branches: [master, release]
+#    types: 
+#      - completed
 
 jobs:
   build:
