@@ -64,16 +64,21 @@ jobs:
           zip -r 4-3.zip 43/
           zip -r 16-9.zip 169/
 
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.sha }}
-          release_name: Release ${{ github.sha }}
-          body: |
-            Automatically created by GitHub Actions
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
           draft: false
           prerelease: false
 
