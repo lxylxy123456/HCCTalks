@@ -4,7 +4,7 @@ on: [push, pull_request]
 #  workflow_run:
 #    workflows: ["Generate PDF"]
 #    branches: [master, release]
-#    types: 
+#    types:
 #      - completed
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
           prerelease: false
 
       - name: Release 4:3
-        id: upload-release-asset 
+        id: upload-release-asset-4-3
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -57,7 +57,7 @@ jobs:
           asset_content_type: application/zip
 
       - name: Release 16:9
-        id: upload-release-asset 
+        id: upload-release-asset-16-9
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
