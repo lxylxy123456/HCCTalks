@@ -5,6 +5,15 @@
 * Old talk files (written in LibreOffice Impress) are in
 	[odp](https://github.com/lxylxy123456/HCCTalks/tree/odp) branch. 
 
+## Download
+* This project is using GitHub Actions to continuously release new versions.
+* Download the slides at the
+  [Releases](https://github.com/lxylxy123456/HCCTalks/releases/latest) page
+	* Download `16-9.zip` if your screen's aspect ratio is 16:9
+	  (e.g. 1366x768, 1920x1080)
+	* Download `4-3.zip` if your screen's aspect ratio is 4:3
+	  (e.g. 1024x768, 1920×1440)
+
 ## Make
 * Run `make ALL` to generate all pdf files to `/tmp/` directory. 
 	* To change output directory, use `TMP=/new/output/dir`. 
