@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.7
 
       - name: Install dependencies
         run: |
@@ -31,13 +31,13 @@ jobs:
         run: make ALL
 
       - name: upload 4:3
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: 4-3
           path: /tmp/43/*.pdf
 
       - name: upload 16:9
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: 16-9
           path: /tmp/169/*.pdf
@@ -48,16 +48,16 @@ jobs:
     if: ${{ (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master' && github.event_name == 'push') }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.7
 
       - name: Download 4:3
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4.1.8
         with:
           name: 4-3
           path: 43/
 
       - name: Download 16:9
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4.1.8
         with:
           name: 16-9
           path: 169/
